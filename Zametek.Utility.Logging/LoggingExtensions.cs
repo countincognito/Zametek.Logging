@@ -17,7 +17,7 @@ namespace Zametek.Utility.Logging
                 .Enrich.WithMachineName();
         }
 
-        public static LoggerConfiguration FromLoggingProxy(this LoggerEnrichmentConfiguration enrichmentConfiguration)
+        public static LoggerConfiguration FromLogProxy(this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
             if (enrichmentConfiguration == null)
             {
