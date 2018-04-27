@@ -7,7 +7,7 @@
     <Copyright>Copyright (c) 2018 Riccardo M Bennett-Lovsey</Copyright>
     <PackageLicenseUrl>https://github.com/countincognito/Zametek.Utility.Logging/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Utility.Logging</PackageProjectUrl>
-    <Version>0.6.0</Version>
+    <Version>0.6.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
