@@ -78,7 +78,7 @@ namespace Zametek.Utility.Logging
             using (LogContext.Push(new InvocationEnricher(invocation)))
             using (LogContext.PushProperty(ArgumentsName, filteredParameters, destructureObjects: true))
             {
-                m_Logger.Information($"{GetSourceMessage(invocation)}");
+                m_Logger.Information($"{GetSourceMessage(invocation)} invocation started");
             }
         }
 
@@ -99,7 +99,7 @@ namespace Zametek.Utility.Logging
             using (LogContext.Push(new InvocationEnricher(invocation)))
             using (LogContext.PushProperty(ReturnValueName, filteredReturnValue, destructureObjects: true))
             {
-                m_Logger.Information($"{GetSourceMessage(invocation)}");
+                m_Logger.Information($"{GetSourceMessage(invocation)} invocation ended");
             }
         }
 

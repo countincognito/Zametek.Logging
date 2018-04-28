@@ -22,7 +22,7 @@ namespace Zametek.Utility.Logging
             using (LogContext.PushProperty(LogTypeName, LogType.Performance))
             using (LogContext.Push(new InvocationEnricher(invocation)))
             {
-                m_Logger.Information($"{GetSourceMessage(invocation)} timing started");
+                m_Logger.Information($"{GetSourceMessage(invocation)} invocation started");
             }
         }
 
@@ -33,7 +33,7 @@ namespace Zametek.Utility.Logging
             using (LogContext.PushProperty(LogTypeName, LogType.Performance))
             using (LogContext.Push(new InvocationEnricher(invocation)))
             {
-                m_Logger.Information($"{GetSourceMessage(invocation)} ElapsedMilliseconds: {{ElapsedMilliseconds}}", elapsedMilliseconds);
+                m_Logger.Information($"{GetSourceMessage(invocation)} invocation ended, ElapsedMilliseconds: {{ElapsedMilliseconds}}", elapsedMilliseconds);
             }
         }
 
