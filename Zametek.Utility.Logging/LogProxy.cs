@@ -14,7 +14,7 @@ namespace Zametek.Utility.Logging
         public static I Create<I>(
             I instance,
             ILogger logger,
-            LogType logType = LogType.All,
+            LogType logType = LogType.Tracking | LogType.Error | LogType.Performance,
             params IInterceptor[] extraInterceptors) where I : class
         {
             if (instance == null)
@@ -94,13 +94,7 @@ namespace Zametek.Utility.Logging
 
             if (logType.HasFlag(LogType.Diagnostic))
             {
-                // Check for NoDiagnosticLogging Class scope.
-                bool classHasNoDiagnosticAttribute = instance.GetType().GetCustomAttributes(typeof(NoDiagnosticLoggingAttribute), false).Any();
-
-                if (!classHasNoDiagnosticAttribute)
-                {
-                    interceptors.Add(new AsyncDiagnosticLoggingInterceptor(logger).ToInterceptor());
-                }
+                interceptors.Add(new AsyncDiagnosticLoggingInterceptor(logger).ToInterceptor());
             }
 
             return interceptors;

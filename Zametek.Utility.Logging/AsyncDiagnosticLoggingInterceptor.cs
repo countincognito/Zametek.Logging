@@ -4,13 +4,14 @@ using Serilog.Context;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Zametek.Utility.Logging
 {
     public class AsyncDiagnosticLoggingInterceptor
-        : ProcessingAsyncInterceptor<object>
+        : ProcessingAsyncInterceptor<DiagnosticLogState>
     {
         public const string LogTypeName = nameof(LogType);
         public const string ArgumentsName = nameof(IInvocation.Arguments);
@@ -24,86 +25,76 @@ namespace Zametek.Utility.Logging
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        protected override object StartingInvocation(IInvocation invocation)
+        protected override DiagnosticLogState StartingInvocation(IInvocation invocation)
         {
-            bool mustLog = MustLog(invocation);
+            Debug.Assert(invocation != null);
+            Debug.Assert(invocation.TargetType != null);
 
-            if (mustLog)
+            LogActive classActiveState = LogActive.Off;
+
+            // Check for DiagnosticLogging Class scope.
+            var classDiagnosticAttribute = invocation
+                .TargetType
+                .GetCustomAttributes(typeof(DiagnosticLoggingAttribute), false)
+                .FirstOrDefault() as DiagnosticLoggingAttribute;
+
+            if (classDiagnosticAttribute != null)
             {
-                LogBeforeInvocation(invocation);
+                classActiveState = classDiagnosticAttribute.LogActive;
             }
 
-            return null;
+            LogActive methodActiveState = LogMethodBeforeInvocation(invocation, classActiveState);
+            return new DiagnosticLogState(methodActiveState);
         }
 
-        protected override void CompletedInvocation(IInvocation invocation, object state, object returnValue)
-        {
-            bool mustLog = MustLog(invocation);
-
-            if (mustLog)
-            {
-                LogAfterInvocation(invocation, returnValue);
-            }
-        }
-
-        private static bool MustLog(IInvocation invocation)
-        {
-            if (invocation == null)
-            {
-                throw new ArgumentNullException(nameof(invocation));
-            }
-
-            MethodInfo methodInfo = invocation.MethodInvocationTarget;
-            Debug.Assert(methodInfo != null);
-
-            // Check for NoDiagnosticLogging Method scope.
-            bool methodHasNoDiagnosticAttribute = methodInfo.GetCustomAttribute(typeof(NoDiagnosticLoggingAttribute)) != null;
-            return !methodHasNoDiagnosticAttribute;
-        }
-
-        private void LogBeforeInvocation(IInvocation invocation)
+        protected override void CompletedInvocation(IInvocation invocation, DiagnosticLogState activeState, object returnValue)
         {
             if (invocation == null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
 
-            MethodInfo methodInfo = invocation.MethodInvocationTarget;
-            Debug.Assert(methodInfo != null);
-
-            // Check for NoDiagnosticLogging Parameter scope.
-            List<object> filteredParameters = FilterParameters(invocation, methodInfo);
-
-            using (LogContext.PushProperty(LogTypeName, LogType.Diagnostic))
-            using (LogContext.Push(new InvocationEnricher(invocation)))
-            using (LogContext.PushProperty(ArgumentsName, filteredParameters, destructureObjects: true))
-            {
-                m_Logger.Information($"{GetSourceMessage(invocation)} invocation started");
-            }
+            LogActive classActiveState = activeState;
+            LogMethodAfterInvocation(invocation, classActiveState, returnValue);
         }
 
-        private void LogAfterInvocation(IInvocation invocation, object returnValue)
+        private LogActive LogMethodBeforeInvocation(IInvocation invocation, LogActive activeState)
         {
             if (invocation == null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
 
+            LogActive methodActiveState = activeState;
             MethodInfo methodInfo = invocation.MethodInvocationTarget;
             Debug.Assert(methodInfo != null);
 
-            // Check for NoDiagnosticLogging ReturnValue scope.
-            object filteredReturnValue = FilterReturnValue(methodInfo, returnValue);
+            // Check for DiagnosticLogging Method scope.
+            var methodDiagnosticAttribute = methodInfo
+                .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) as DiagnosticLoggingAttribute;
 
-            using (LogContext.PushProperty(LogTypeName, LogType.Diagnostic))
-            using (LogContext.Push(new InvocationEnricher(invocation)))
-            using (LogContext.PushProperty(ReturnValueName, filteredReturnValue, destructureObjects: true))
+            if (methodDiagnosticAttribute != null)
             {
-                m_Logger.Information($"{GetSourceMessage(invocation)} invocation ended");
+                methodActiveState = methodDiagnosticAttribute.LogActive;
             }
+
+            (IList<object> filteredParameters, LogActive returnState) = FilterParameters(invocation, methodInfo, methodActiveState);
+
+            if (returnState == LogActive.On)
+            {
+                using (LogContext.PushProperty(LogTypeName, LogType.Diagnostic))
+                using (LogContext.Push(new InvocationEnricher(invocation)))
+                using (LogContext.PushProperty(ArgumentsName, filteredParameters, destructureObjects: true))
+                {
+                    string logMessage = $"{GetSourceMessage(invocation)} invocation started";
+                    m_Logger.Information(logMessage);
+                }
+            }
+
+            return methodActiveState;
         }
 
-        private static List<object> FilterParameters(IInvocation invocation, MethodInfo methodInfo)
+        private static (IList<object>, LogActive) FilterParameters(IInvocation invocation, MethodInfo methodInfo, LogActive activeState)
         {
             if (invocation == null)
             {
@@ -113,6 +104,7 @@ namespace Zametek.Utility.Logging
             {
                 throw new ArgumentNullException(nameof(methodInfo));
             }
+
             ParameterInfo[] parameterInfos = methodInfo.GetParameters();
             Debug.Assert(parameterInfos != null);
 
@@ -123,47 +115,103 @@ namespace Zametek.Utility.Logging
 
             var filteredParameters = new List<object>();
 
+            // Send a message back whether anything should be logged.
+            LogActive returnState = activeState;
+
             for (int parameterIndex = 0; parameterIndex < parameters.Length; parameterIndex++)
             {
+                LogActive parameterActiveState = activeState;
                 ParameterInfo parameterInfo = parameterInfos[parameterIndex];
-                bool parameterHasNoDiagnosticAttribute = parameterInfo.GetCustomAttribute(typeof(NoDiagnosticLoggingAttribute)) != null;
 
-                if (parameterHasNoDiagnosticAttribute)
+                // Check for DiagnosticLogging Parameter scope.
+                var parameterDiagnosticAttribute = parameterInfo
+                    .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) as DiagnosticLoggingAttribute;
+
+                if (parameterDiagnosticAttribute != null)
                 {
-                    filteredParameters.Add(FilteredParameterSubstitute);
+                    parameterActiveState = parameterDiagnosticAttribute.LogActive;
                 }
 
-                object parameter = parameters[parameterIndex];
-                filteredParameters.Add(parameter);
+                object parameterValue = FilteredParameterSubstitute;
+
+                if (parameterActiveState == LogActive.On)
+                {
+                    returnState = LogActive.On;
+                    parameterValue = parameters[parameterIndex];
+                }
+
+                filteredParameters.Add(parameterValue);
             }
 
-            return filteredParameters;
+            return (filteredParameters, returnState);
         }
 
-        private static object FilterReturnValue(MethodInfo methodInfo, object returnValue)
+        private void LogMethodAfterInvocation(IInvocation invocation, LogActive activeState, object returnValue)
+        {
+            if (invocation == null)
+            {
+                throw new ArgumentNullException(nameof(invocation));
+            }
+
+            LogActive methodActiveState = activeState;
+            MethodInfo methodInfo = invocation.MethodInvocationTarget;
+            Debug.Assert(methodInfo != null);
+
+            (object filteredReturnValue, LogActive returnState) = FilterReturnValue(methodInfo, methodActiveState, returnValue);
+
+            if (returnState == LogActive.On)
+            {
+                using (LogContext.PushProperty(LogTypeName, LogType.Diagnostic))
+                using (LogContext.Push(new InvocationEnricher(invocation)))
+                using (LogContext.PushProperty(ReturnValueName, filteredReturnValue, destructureObjects: true))
+                {
+                    string logMessage = $"{GetSourceMessage(invocation)} invocation ended";
+                    m_Logger.Information(logMessage);
+                }
+            }
+        }
+
+        private static (object, LogActive) FilterReturnValue(MethodInfo methodInfo, LogActive activeState, object returnValue)
         {
             if (methodInfo == null)
             {
                 throw new ArgumentNullException(nameof(methodInfo));
             }
 
+            LogActive returnParameterActiveState = activeState;
             ParameterInfo parameterInfo = methodInfo.ReturnParameter;
             Debug.Assert(parameterInfo != null);
 
-            bool returnValueHasNoDiagnosticAttribute = parameterInfo.GetCustomAttribute(typeof(NoDiagnosticLoggingAttribute)) != null;
+            // Check for DiagnosticLogging ReturnValue scope.
+            var returnValueDiagnosticAttribute = parameterInfo
+                .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) as DiagnosticLoggingAttribute;
 
-            if (returnValueHasNoDiagnosticAttribute)
+            if (returnValueDiagnosticAttribute != null)
             {
-                return FilteredParameterSubstitute;
+                returnParameterActiveState = returnValueDiagnosticAttribute.LogActive;
             }
 
-            if (parameterInfo.ParameterType == typeof(void)
-                || parameterInfo.ParameterType == typeof(Task))
+            object returnParameterValue = FilteredParameterSubstitute;
+
+            // Send a message back whether anything should be logged.
+            LogActive returnState = activeState;
+
+            if (returnParameterActiveState == LogActive.On)
             {
-                return VoidSubstitute;
+                returnState = LogActive.On;
+
+                if (parameterInfo.ParameterType == typeof(void)
+                    || parameterInfo.ParameterType == typeof(Task))
+                {
+                    returnParameterValue = VoidSubstitute;
+                }
+                else
+                {
+                    returnParameterValue = returnValue;
+                }
             }
 
-            return returnValue;
+            return (returnParameterValue, returnState);
         }
 
         private static string GetSourceMessage(IInvocation invocation)
@@ -173,6 +221,28 @@ namespace Zametek.Utility.Logging
                 throw new ArgumentNullException(nameof(invocation));
             }
             return $"diagnostic-{invocation.TargetType?.Namespace}.{invocation.TargetType?.Name}.{invocation.Method?.Name}";
+        }
+    }
+
+    public class DiagnosticLogState
+    {
+        public DiagnosticLogState(LogActive activeState)
+        {
+            ActiveState = activeState;
+        }
+
+        public LogActive ActiveState
+        {
+            get;
+        }
+
+        public static implicit operator LogActive(DiagnosticLogState state)
+        {
+            if (state == null)
+            {
+                throw new ArgumentNullException(nameof(state));
+            }
+            return state.ActiveState;
         }
     }
 }
