@@ -2,11 +2,10 @@
 
 namespace Zametek.Utility.Logging.Tests
 {
-    [DiagnosticLogging(LogActive.Off)]
-    public class TestInactiveDiagnosticLoggingService
+    public class TestBareDiagnosticLoggingService
         : ITestDiagnosticLoggingService
     {
-        public const string ReturnValue = "MyInactiveReturnString";
+        public const string ReturnValue = "MyBareReturnString";
 
         #region Plain
 

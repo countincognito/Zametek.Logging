@@ -73,11 +73,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncDiagnosticLoggingInterceptorTests.cs" />
+    <Compile Include="AsyncTrackingInterceptor\InactiveClass_AsyncDiagnosticLoggingInterceptorTests.cs" />
+    <Compile Include="AsyncTrackingInterceptor\BareClass_AsyncDiagnosticLoggingInterceptorTests.cs" />
+    <Compile Include="AsyncTrackingInterceptor\AsyncDiagnosticLoggingInterceptorTests.cs" />
     <Compile Include="AsyncTrackingInterceptorTests.cs" />
     <Compile Include="Dummies\ITestDiagnosticLoggingService.cs" />
     <Compile Include="Dummies\ITestTrackingService.cs" />
-    <Compile Include="Dummies\TestDiagnosticLoggingService.cs" />
+    <Compile Include="Dummies\TestBareDiagnosticLoggingService.cs" />
     <Compile Include="Dummies\TestInactiveDiagnosticLoggingService.cs" />
     <Compile Include="Dummies\TestActiveDiagnosticLoggingService.cs" />
     <Compile Include="TrackingContextEnricherTests.cs" />
