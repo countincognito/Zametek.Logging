@@ -15,7 +15,7 @@ namespace Zametek.Utility.Logging.Tests
 
             public object InvocationTarget => throw new NotImplementedException();
 
-            public MethodInfo Method => typeof(Test).GetMethod(nameof(Test.ReturnAsync));
+            public MethodInfo Method => typeof(TestTrackingService).GetMethod(nameof(TestTrackingService.ReturnAsync));
 
             public MethodInfo MethodInvocationTarget => throw new NotImplementedException();
 
@@ -23,7 +23,7 @@ namespace Zametek.Utility.Logging.Tests
 
             public object ReturnValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-            public Type TargetType => typeof(Test);
+            public Type TargetType => typeof(TestTrackingService);
 
             public object GetArgumentValue(int index)
             {

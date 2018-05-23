@@ -12,10 +12,10 @@ namespace Zametek.Utility.Logging.Tests
         [TestMethod]
         public async Task AsyncTrackingInterceptor_ReturnAsyncWithoutCurrent_NewTrackingContextReturned()
         {
-            var instance = new Test();
+            var instance = new TestTrackingService();
             var interceptor = new AsyncTrackingInterceptor();
 
-            ITest proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITest>(instance, interceptor.ToInterceptor());
+            ITestTrackingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestTrackingService>(instance, interceptor.ToInterceptor());
 
             Assert.IsNull(TrackingContext.Current);
 
@@ -32,10 +32,10 @@ namespace Zametek.Utility.Logging.Tests
         [TestMethod]
         public async Task AsyncTrackingInterceptor_ReturnAsyncWithCurrent_SameTrackingContextReturned()
         {
-            var instance = new Test();
+            var instance = new TestTrackingService();
             var interceptor = new AsyncTrackingInterceptor();
 
-            ITest proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITest>(instance, interceptor.ToInterceptor());
+            ITestTrackingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestTrackingService>(instance, interceptor.ToInterceptor());
 
             TrackingContext.NewCurrent();
             TrackingContext currentTrackingContext = TrackingContext.Current;
@@ -60,10 +60,10 @@ namespace Zametek.Utility.Logging.Tests
         [TestMethod]
         public async Task AsyncTrackingInterceptor_ReturnTrackingContextAsyncWithoutCurrent_NewTrackingContextReturned()
         {
-            var instance = new Test();
+            var instance = new TestTrackingService();
             var interceptor = new AsyncTrackingInterceptor();
 
-            ITest proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITest>(instance, interceptor.ToInterceptor());
+            ITestTrackingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestTrackingService>(instance, interceptor.ToInterceptor());
 
             Assert.IsNull(TrackingContext.Current);
 
@@ -76,10 +76,10 @@ namespace Zametek.Utility.Logging.Tests
         [TestMethod]
         public async Task AsyncTrackingInterceptor_ReturnTrackingContextAsyncWithCurrent_SameTrackingContextReturned()
         {
-            var instance = new Test();
+            var instance = new TestTrackingService();
             var interceptor = new AsyncTrackingInterceptor();
 
-            ITest proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITest>(instance, interceptor.ToInterceptor());
+            ITestTrackingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestTrackingService>(instance, interceptor.ToInterceptor());
 
             TrackingContext.NewCurrent();
             TrackingContext currentTrackingContext = TrackingContext.Current;

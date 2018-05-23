@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Zametek.Utility.Logging.Tests
 {
-    public class Test
-        : ITest
+    public class TestTrackingService
+        : ITestTrackingService
     {
         public async Task ReturnAsync(Action action)
         {
