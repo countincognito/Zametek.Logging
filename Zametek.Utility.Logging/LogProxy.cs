@@ -64,6 +64,8 @@ namespace Zametek.Utility.Logging
             return s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface(instanceType, instance, interceptors.ToArray());
         }
 
+        public static HashSet<string> FilterTheseParameters { get; } = new HashSet<string> { "password", "PASSWORD", "Password", "secret", "SECRET", "Secret" };
+
         private static List<IInterceptor> BuildStandardInterceptors(object instance, ILogger logger, LogType logType)
         {
             if (instance == null)
@@ -94,7 +96,7 @@ namespace Zametek.Utility.Logging
 
             if (logType.HasFlag(LogType.Diagnostic))
             {
-                interceptors.Add(new AsyncDiagnosticLoggingInterceptor(logger).ToInterceptor());
+                interceptors.Add(new AsyncDiagnosticLoggingInterceptor(logger, FilterTheseParameters).ToInterceptor());
             }
 
             return interceptors;

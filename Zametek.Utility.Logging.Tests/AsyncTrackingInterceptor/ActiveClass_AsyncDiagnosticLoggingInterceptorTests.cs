@@ -1,6 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Zametek.Utility.Logging.Tests
@@ -9,6 +10,14 @@ namespace Zametek.Utility.Logging.Tests
     {
         private static ITestDiagnosticLoggingService CreateActiveClassProxy(StringWriter returnOutput, StringWriter paramsOutput)
         {
+            return CreateActiveClassProxy(returnOutput, paramsOutput, new HashSet<string>());
+        }
+
+        private static ITestDiagnosticLoggingService CreateActiveClassProxy(
+            StringWriter returnOutput,
+            StringWriter paramsOutput,
+            HashSet<string> filterTheseParameters)
+        {
             ILogger serilog = new LoggerConfiguration()
                 .Enrich.FromLogProxy()
                 .WriteTo.TextWriter(returnOutput, outputTemplate: $"{{{AsyncDiagnosticLoggingInterceptor.ReturnValueName}}}")
@@ -16,7 +25,7 @@ namespace Zametek.Utility.Logging.Tests
                 .CreateLogger();
 
             var instance = new TestActiveDiagnosticLoggingService();
-            var interceptor = new AsyncDiagnosticLoggingInterceptor(serilog);
+            var interceptor = new AsyncDiagnosticLoggingInterceptor(serilog, filterTheseParameters);
 
             ITestDiagnosticLoggingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestDiagnosticLoggingService>(instance, interceptor.ToInterceptor());
             return proxy;
@@ -258,6 +267,51 @@ namespace Zametek.Utility.Logging.Tests
             Assert.AreEqual(TestActiveDiagnosticLoggingService.ReturnValue, returnValue);
             Assert.AreEqual(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute, returnOutput.ToString());
             Assert.AreEqual(m_FilteredParamsLogReturn, paramsOutput.ToString());
+        }
+
+        [TestMethod]
+        public void AsyncDiagnosticLoggingInterceptor_ActiveClassActiveSomeParamsReturnStringFilterTheseParameters_ParameterOutputsFiltered()
+        {
+            var returnOutput = new StringWriter();
+            var paramsOutput = new StringWriter();
+
+            ITestDiagnosticLoggingService proxy = CreateActiveClassProxy(returnOutput, paramsOutput, new HashSet<string> { @"param1", @"param2" });
+
+            string returnValue = proxy.ActiveSomeParamsReturnString(m_FirstParam, m_SecondParam);
+
+            Assert.AreEqual(TestActiveDiagnosticLoggingService.ReturnValue, returnValue);
+            Assert.AreEqual(returnValue, returnOutput.ToString());
+            Assert.AreEqual(m_FilteredParamsLogReturn, paramsOutput.ToString());
+        }
+
+        [TestMethod]
+        public void AsyncDiagnosticLoggingInterceptor_ActiveClassActiveSomeParamsReturnStringDoNotFilterTheseParameters_OutputsPopulated()
+        {
+            var returnOutput = new StringWriter();
+            var paramsOutput = new StringWriter();
+
+            ITestDiagnosticLoggingService proxy = CreateActiveClassProxy(returnOutput, paramsOutput, new HashSet<string> { @"random1", @"random2" });
+
+            string returnValue = proxy.ActiveSomeParamsReturnString(m_FirstParam, m_SecondParam);
+
+            Assert.AreEqual(TestActiveDiagnosticLoggingService.ReturnValue, returnValue);
+            Assert.AreEqual(returnValue, returnOutput.ToString());
+            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+        }
+
+        [TestMethod]
+        public void AsyncDiagnosticLoggingInterceptor_ActiveClassActiveSomeParamsReturnStringActiveParamsActiveReturnFilterTheseParameters_OutputsPopulated()
+        {
+            var returnOutput = new StringWriter();
+            var paramsOutput = new StringWriter();
+
+            ITestDiagnosticLoggingService proxy = CreateActiveClassProxy(returnOutput, paramsOutput, new HashSet<string> { @"param1", @"param2" });
+
+            string returnValue = proxy.ActiveSomeParamsReturnStringActiveParamsActiveReturn(m_FirstParam, m_SecondParam);
+
+            Assert.AreEqual(TestActiveDiagnosticLoggingService.ReturnValue, returnValue);
+            Assert.AreEqual(returnValue, returnOutput.ToString());
+            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
         }
 
         #endregion

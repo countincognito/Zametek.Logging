@@ -19,10 +19,17 @@ namespace Zametek.Utility.Logging
         public const string VoidSubstitute = @"__VOID__";
         public const string FilteredParameterSubstitute = @"__FILTERED__";
         private readonly ILogger m_Logger;
+        private readonly HashSet<string> m_FilterTheseParameters;
 
         public AsyncDiagnosticLoggingInterceptor(ILogger logger)
+            : this(logger, new HashSet<string>())
+        {
+        }
+
+        public AsyncDiagnosticLoggingInterceptor(ILogger logger, HashSet<string> filterTheseParameters)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            m_FilterTheseParameters = filterTheseParameters ?? throw new ArgumentNullException(nameof(filterTheseParameters));
         }
 
         protected override DiagnosticLogState StartingInvocation(IInvocation invocation)
@@ -78,9 +85,9 @@ namespace Zametek.Utility.Logging
                 methodActiveState = methodDiagnosticAttribute.LogActive;
             }
 
-            (IList<object> filteredParameters, LogActive returnState) = FilterParameters(invocation, methodInfo, methodActiveState);
+            (IList<object> filteredParameters, LogActive anyParametersToLog) = FilterParameters(invocation, methodInfo, methodActiveState, m_FilterTheseParameters);
 
-            if (returnState == LogActive.On)
+            if (anyParametersToLog == LogActive.On)
             {
                 using (LogContext.PushProperty(LogTypeName, LogType.Diagnostic))
                 using (LogContext.Push(new InvocationEnricher(invocation)))
@@ -94,7 +101,11 @@ namespace Zametek.Utility.Logging
             return methodActiveState;
         }
 
-        private static (IList<object>, LogActive) FilterParameters(IInvocation invocation, MethodInfo methodInfo, LogActive activeState)
+        private static (IList<object>, LogActive) FilterParameters(
+            IInvocation invocation,
+            MethodInfo methodInfo,
+            LogActive activeState,
+            HashSet<string> filterTheseParameters)
         {
             if (invocation == null)
             {
@@ -103,6 +114,10 @@ namespace Zametek.Utility.Logging
             if (methodInfo == null)
             {
                 throw new ArgumentNullException(nameof(methodInfo));
+            }
+            if (filterTheseParameters == null)
+            {
+                throw new ArgumentNullException(nameof(filterTheseParameters));
             }
 
             ParameterInfo[] parameterInfos = methodInfo.GetParameters();
@@ -116,12 +131,18 @@ namespace Zametek.Utility.Logging
             var filteredParameters = new List<object>();
 
             // Send a message back whether anything should be logged.
-            LogActive returnState = activeState;
+            LogActive anyParametersToLog = activeState;
 
             for (int parameterIndex = 0; parameterIndex < parameters.Length; parameterIndex++)
             {
                 LogActive parameterActiveState = activeState;
                 ParameterInfo parameterInfo = parameterInfos[parameterIndex];
+
+                // Check if the parameter name matches any of the pre-determined filters.
+                if (filterTheseParameters.Contains(parameterInfo.Name))
+                {
+                    parameterActiveState = LogActive.Off;
+                }
 
                 // Check for DiagnosticLogging Parameter scope.
                 var parameterDiagnosticAttribute = parameterInfo
@@ -136,14 +157,14 @@ namespace Zametek.Utility.Logging
 
                 if (parameterActiveState == LogActive.On)
                 {
-                    returnState = LogActive.On;
+                    anyParametersToLog = LogActive.On;
                     parameterValue = parameters[parameterIndex];
                 }
 
                 filteredParameters.Add(parameterValue);
             }
 
-            return (filteredParameters, returnState);
+            return (filteredParameters, anyParametersToLog);
         }
 
         private void LogMethodAfterInvocation(IInvocation invocation, LogActive activeState, object returnValue)
@@ -157,9 +178,9 @@ namespace Zametek.Utility.Logging
             MethodInfo methodInfo = invocation.MethodInvocationTarget;
             Debug.Assert(methodInfo != null);
 
-            (object filteredReturnValue, LogActive returnState) = FilterReturnValue(methodInfo, methodActiveState, returnValue);
+            (object filteredReturnValue, LogActive anyParametersToLog) = FilterReturnValue(methodInfo, methodActiveState, returnValue);
 
-            if (returnState == LogActive.On)
+            if (anyParametersToLog == LogActive.On)
             {
                 using (LogContext.PushProperty(LogTypeName, LogType.Diagnostic))
                 using (LogContext.Push(new InvocationEnricher(invocation)))
@@ -194,11 +215,11 @@ namespace Zametek.Utility.Logging
             object returnParameterValue = FilteredParameterSubstitute;
 
             // Send a message back whether anything should be logged.
-            LogActive returnState = activeState;
+            LogActive anyParametersToLog = activeState;
 
             if (returnParameterActiveState == LogActive.On)
             {
-                returnState = LogActive.On;
+                anyParametersToLog = LogActive.On;
 
                 if (parameterInfo.ParameterType == typeof(void)
                     || parameterInfo.ParameterType == typeof(Task))
@@ -211,7 +232,7 @@ namespace Zametek.Utility.Logging
                 }
             }
 
-            return (returnParameterValue, returnState);
+            return (returnParameterValue, anyParametersToLog);
         }
 
         private static string GetSourceMessage(IInvocation invocation)
