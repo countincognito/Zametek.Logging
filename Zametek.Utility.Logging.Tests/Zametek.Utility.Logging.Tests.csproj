@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncTrackingInterceptor\ActiveClass_AsyncDiagnosticLoggingInterceptorTests.cs" />
     <Compile Include="AsyncTrackingInterceptor\InactiveClass_AsyncDiagnosticLoggingInterceptorTests.cs" />
     <Compile Include="AsyncTrackingInterceptor\BareClass_AsyncDiagnosticLoggingInterceptorTests.cs" />
     <Compile Include="AsyncTrackingInterceptor\AsyncDiagnosticLoggingInterceptorTests.cs" />

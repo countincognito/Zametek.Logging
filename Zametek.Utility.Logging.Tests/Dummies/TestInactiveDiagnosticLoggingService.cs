@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Zametek.Utility.Logging.Tests
+﻿namespace Zametek.Utility.Logging.Tests
 {
     [DiagnosticLogging(LogActive.Off)]
     public class TestInactiveDiagnosticLoggingService
