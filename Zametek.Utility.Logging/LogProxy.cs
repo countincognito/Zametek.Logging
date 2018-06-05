@@ -10,11 +10,12 @@ namespace Zametek.Utility.Logging
     public class LogProxy
     {
         private static readonly IProxyGenerator s_ProxyGenerator = new ProxyGenerator();
+        private const LogType c_DefaultLogType = LogType.Tracking | LogType.Error | LogType.Performance;
 
         public static I Create<I>(
             I instance,
             ILogger logger,
-            LogType logType = LogType.Tracking | LogType.Error | LogType.Performance,
+            LogType logType = c_DefaultLogType,
             params IInterceptor[] extraInterceptors) where I : class
         {
             if (instance == null)
@@ -41,7 +42,7 @@ namespace Zametek.Utility.Logging
             Type instanceType,
             object instance,
             ILogger logger,
-            LogType logType = LogType.All,
+            LogType logType = c_DefaultLogType,
             params IInterceptor[] extraInterceptors)
         {
             if (instance == null)
