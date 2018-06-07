@@ -23,7 +23,7 @@ namespace Zametek.Utility.Logging.Tests
             await proxy.ReturnAsync(() =>
             {
                 returnedTrackingContext = TrackingContext.Current;
-            });
+            }).ConfigureAwait(false);
 
             Assert.IsNotNull(returnedTrackingContext);
             Assert.IsNull(TrackingContext.Current);
@@ -46,7 +46,7 @@ namespace Zametek.Utility.Logging.Tests
             await proxy.ReturnAsync(() =>
             {
                 returnedTrackingContext = TrackingContext.Current;
-            });
+            }).ConfigureAwait(false);
 
             Assert.IsNotNull(TrackingContext.Current);
             Assert.AreEqual(TrackingContext.Current.CallChainId, currentTrackingContext.CallChainId);
@@ -67,7 +67,7 @@ namespace Zametek.Utility.Logging.Tests
 
             Assert.IsNull(TrackingContext.Current);
 
-            TrackingContext returnedTrackingContext = await proxy.ReturnTrackingContextAsync();
+            TrackingContext returnedTrackingContext = await proxy.ReturnTrackingContextAsync().ConfigureAwait(false);
 
             Assert.IsNotNull(returnedTrackingContext);
             Assert.IsNull(TrackingContext.Current);
@@ -86,7 +86,7 @@ namespace Zametek.Utility.Logging.Tests
 
             Assert.IsNotNull(currentTrackingContext);
 
-            TrackingContext returnedTrackingContext = await proxy.ReturnTrackingContextAsync();
+            TrackingContext returnedTrackingContext = await proxy.ReturnTrackingContextAsync().ConfigureAwait(false);
 
             Assert.IsNotNull(TrackingContext.Current);
             Assert.AreEqual(TrackingContext.Current.CallChainId, currentTrackingContext.CallChainId);

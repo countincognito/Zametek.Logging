@@ -9,12 +9,12 @@ namespace Zametek.Utility.Logging.Tests
         public async Task ReturnAsync(Action action)
         {
             action.Invoke();
-            await Task.CompletedTask;
+            await Task.CompletedTask.ConfigureAwait(false);
         }
 
         public async Task<TrackingContext> ReturnTrackingContextAsync()
         {
-            return await Task.FromResult(TrackingContext.Current);
+            return await Task.FromResult(TrackingContext.Current).ConfigureAwait(false);
         }
     }
 }
