@@ -41,7 +41,7 @@ At the moment, **Zametek.Utility.Logging** only works with [Serilog](https://git
 
 ### Tracking
 
-The `AsyncTrackingInterceptor` creates a new static [`TrackingContext`](https://github.com/countincognito/Zametek.Utility/blob/master/Zametek.Utility/TrackingContext.cs) (from [Zametek.Utility](https://github.com/countincognito/Zametek.Utility)) at the top of the call-chain, if (and only if) one does not already exist.
+The `AsyncTrackingInterceptor` creates a new static [`TrackingContext`](https://github.com/countincognito/Zametek.Utility/blob/master/src/Zametek.Utility/TrackingContext.cs) (from [Zametek.Utility](https://github.com/countincognito/Zametek.Utility)) at the top of the call-chain, if (and only if) one does not already exist.
 
 It is included in the `LogProxy.Create()` call by default.
 
@@ -127,7 +127,7 @@ It is included in the `LogProxy.Create()` call by default.
 
 ### Diagnostic
 
-The `AsyncDiagnosticLoggingInterceptor` is a powerful interceptor capable of logging the contents of **all** input parameters and return values for every method call made on a logging proxy. This capability can be turned 'on' or 'off' at the class, method or parameter level when the interceptor is included, or disabled completely if the interceptor is excluded.
+The `AsyncDiagnosticLoggingInterceptor` is an interceptor capable of logging the contents of **all** input parameters and return values for every method call made on a logging proxy. This capability can be turned 'on' or 'off' at the class, method or parameter level when the interceptor is included, or disabled completely if the interceptor is excluded.
 
 **Important**: since input parameters and return values can often contain sensitive information that you may not wish to persist in your logging output, this interceptor should be used carefully and with caution. As such, it is **not** included in the `LogProxy.Create()` call by default.
 
@@ -432,7 +432,7 @@ The following fields have been added to the log enrichment where necessary:
 - `Namespace`: this provides the namespace of the parent class from where the logging proxy method call was initiated
 - `Type`: this provides the type name of the parent class from where the logging proxy method call was initiated
 - `Method`: this provides the name of the logging proxy method call itself
-- `CallChainId`: this is added by the `AsyncTrackingInterceptor` and provides a `Guid` value that traces all the way through the logical call chain (even across `Tasks`)
+- `CallChainId`: this is added by the `AsyncTrackingInterceptor` and provides a `Guid` value that traces all the way through the logical call chain (including across `Tasks`)
 - `OriginatorUtcTimestamp`: this is added by the `AsyncTrackingInterceptor` and provides a UTC timestamp for when the `TrackingContext` (and hence the call-chain) was initiated
 - `ElapsedMilliseconds`: this is added by the `AsyncPerformanceLoggingInterceptor` and provides the number of milliseconds it takes for a logging proxy method call to return
 - `Arguments`: this is added by the `AsyncDiagnosticLoggingInterceptor` and shows a break down of the input parameters that are used in a logging proxy method call. Note the following:
