@@ -85,7 +85,7 @@ else
     // If there is pre-existing static TrackingContext, then replace it.
 
     // Be sure to copy over the old key-value pairs, if any exist.
-    IReadOnlyCollection<KeyValuePair<string, string>> extraHeaders = trackingContext?.ExtraHeaders;
+    IReadOnlyCollection<KeyValuePair<string, string>> extraHeaders = trackingContext.ExtraHeaders;
 
     if (extraHeaders != null)
     {
@@ -432,7 +432,7 @@ The following fields have been added to the log enrichment where necessary:
 - `Namespace`: this provides the namespace of the parent class from where the logging proxy method call was initiated
 - `Type`: this provides the type name of the parent class from where the logging proxy method call was initiated
 - `Method`: this provides the name of the logging proxy method call itself
-- `CallChainId`: this is added by the `AsyncTrackingInterceptor` and provides a `Guid` value that traces all the way through the logical call chain (including across `Tasks`)
+- `CallChainId`: this is added by the `AsyncTrackingInterceptor` and provides a unique (`Guid`) value that traces all the way through the logical call-chain (including across `Tasks`)
 - `OriginatorUtcTimestamp`: this is added by the `AsyncTrackingInterceptor` and provides a UTC timestamp for when the `TrackingContext` (and hence the call-chain) was initiated
 - `ElapsedMilliseconds`: this is added by the `AsyncPerformanceLoggingInterceptor` and provides the number of milliseconds it takes for a logging proxy method call to return
 - `Arguments`: this is added by the `AsyncDiagnosticLoggingInterceptor` and shows a break down of the input parameters that are used in a logging proxy method call. Note the following:
