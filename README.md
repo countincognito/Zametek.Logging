@@ -1,5 +1,4 @@
 [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging "NuGet Version")
-
 [![Gitter](https://badges.gitter.im/Zametek-Utility-Logging/Lobby.svg)](https://gitter.im/Zametek-Utility-Logging/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 # Zametek.Utility.Logging
@@ -166,6 +165,7 @@ namespace Example
     {
         // Both the input parameters and the void return will be logged on this method
         // since the parent class has diagnostic logging turned on.
+        // The return value will be listed as the special value __VOID__.
         public void ThisReturnsVoid(string param1, string param2)
         {
         }
@@ -182,6 +182,7 @@ namespace Example
         // However, only the void return and one input parameter (param2) will be logged
         // because param1 is explicitly turning diagnostic logging off, which overrides
         // its parent's setting.
+        // The return value will be listed as the special value __VOID__.
         public void ThisAlsoAsoReturnsVoid(
             [DiagnosticLogging(LogActive.Off)] string param1,
             string param2)
