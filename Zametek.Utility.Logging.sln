@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zametek.Utility.Logging", "Zametek.Utility.Logging\Zametek.Utility.Logging.csproj", "{8A5C7A5F-57E9-41C9-80C2-22CF8C403603}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zametek.Utility.Logging", "src\Zametek.Utility.Logging\Zametek.Utility.Logging.csproj", "{8A5C7A5F-57E9-41C9-80C2-22CF8C403603}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zametek.Utility.Logging.Tests", "Zametek.Utility.Logging.Tests\Zametek.Utility.Logging.Tests.csproj", "{DFF70525-9BE7-4885-BC15-130917E5DAAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zametek.Utility.Logging.Tests", "test\Zametek.Utility.Logging.Tests\Zametek.Utility.Logging.Tests.csproj", "{DFF70525-9BE7-4885-BC15-130917E5DAAE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3EE92514-6DD9-4846-89B2-1EB67ED9D71C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6D165C1B-BDB9-497C-91E4-D525DD22ECB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +28,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A5C7A5F-57E9-41C9-80C2-22CF8C403603} = {3EE92514-6DD9-4846-89B2-1EB67ED9D71C}
+		{DFF70525-9BE7-4885-BC15-130917E5DAAE} = {6D165C1B-BDB9-497C-91E4-D525DD22ECB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E06EFBB6-AB85-4A63-9F09-2B89F704CA9A}
