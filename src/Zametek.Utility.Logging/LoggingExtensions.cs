@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Destructurama;
+using Serilog;
 using Serilog.Configuration;
 using System;
 
@@ -24,6 +25,7 @@ namespace Zametek.Utility.Logging
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
             }
             return enrichmentConfiguration.FromLogContext()
+                .Destructure.UsingAttributes()
                 .Enrich.FromTrackingContext();
         }
     }

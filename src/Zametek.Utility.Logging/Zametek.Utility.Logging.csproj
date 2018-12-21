@@ -11,7 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.5.0" />
+    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.6.0" />
+    <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.2" />
     <PackageReference Include="Serilog.Exceptions" Version="4.0.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
