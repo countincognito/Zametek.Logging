@@ -41,8 +41,8 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Castle.Core.AsyncInterceptor, Version=1.6.0.0, Culture=neutral, PublicKeyToken=e33b67d3bb5581e4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Castle.Core.AsyncInterceptor.1.6.0\lib\net45\Castle.Core.AsyncInterceptor.dll</HintPath>
+    <Reference Include="Castle.Core.AsyncInterceptor, Version=1.7.0.0, Culture=neutral, PublicKeyToken=e33b67d3bb5581e4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.AsyncInterceptor.1.7.0\lib\net45\Castle.Core.AsyncInterceptor.dll</HintPath>
     </Reference>
     <Reference Include="Destructurama.Attributed, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Destructurama.Attributed.2.0.0\lib\netstandard1.1\Destructurama.Attributed.dll</HintPath>

@@ -1,22 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>Zametek utility logging classes.</Description>
-    <Copyright>Copyright (c) 2018 Riccardo M Bennett-Lovsey</Copyright>
+    <Copyright>Copyright (c) 2019 Riccardo M Bennett-Lovsey</Copyright>
     <PackageLicenseUrl>https://github.com/countincognito/Zametek.Utility.Logging/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Utility.Logging</PackageProjectUrl>
-    <Version>0.7.3</Version>
+    <Version>0.7.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.6.0" />
+    <PackageReference Include="Castle.Core.AsyncInterceptor" Version="1.7.0" />
     <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.2" />
-    <PackageReference Include="Serilog.Exceptions" Version="4.0.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.2" />
-    <PackageReference Include="Zametek.Utility" Version="2.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.1.3" />
+    <PackageReference Include="Serilog.Exceptions" Version="4.1.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="2.0.4" />
+    <PackageReference Include="Zametek.Utility" Version="2.0.2" />
   </ItemGroup>
 
 </Project>
