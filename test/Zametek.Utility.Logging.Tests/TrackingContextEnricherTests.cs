@@ -1,49 +1,49 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
 using Serilog.Events;
 using Serilog.Parsing;
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace Zametek.Utility.Logging.Tests
 {
-    [TestClass]
-    public partial class TrackingContextEnricherTests
+    public class TrackingContextEnricherTests
     {
-        [TestMethod]
-        public void TrackingContextEnricher_EnrichWithoutContext_PropertiesAdded()
+        [Fact]
+        public void TrackingContextEnricher_GivenNoTrackingContext_WhenEnricherApplied_ThenNoPropertiesAdded()
         {
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            Assert.IsNull(currentTrackingContext);
+            currentTrackingContext.Should().BeNull();
 
             var trackingContextEnricher = new TrackingContextEnricher();
             var logEvent = new LogEvent(DateTimeOffset.UtcNow, LogEventLevel.Information, null, new MessageTemplate(new List<MessageTemplateToken>()), new List<LogEventProperty>());
 
             trackingContextEnricher.Enrich(logEvent, null);
 
-            Assert.AreEqual(0, logEvent.Properties.Count);
+            logEvent.Properties.Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void TrackingContextEnricher_EnrichWithContext_PropertiesAdded()
+        [Fact]
+        public void TrackingContextEnricher_GivenTrackingContext_WhenEnricherApplied_ThenPropertiesAdded()
         {
             TrackingContext.NewCurrent();
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            Assert.IsNotNull(currentTrackingContext);
+            currentTrackingContext.Should().NotBeNull();
 
             var trackingContextEnricher = new TrackingContextEnricher();
             var logEvent = new LogEvent(DateTimeOffset.UtcNow, LogEventLevel.Information, null, new MessageTemplate(new List<MessageTemplateToken>()), new List<LogEventProperty>());
 
             trackingContextEnricher.Enrich(logEvent, null);
 
-            Assert.AreEqual(2, logEvent.Properties.Count);
-            Assert.AreEqual($"\"{currentTrackingContext.CallChainId}\"", logEvent.Properties[TrackingContextEnricher.CallChainIdPropertyName].ToString());
-            Assert.AreEqual($"\"{currentTrackingContext.OriginatorUtcTimestamp.ToString("o")}\"", logEvent.Properties[TrackingContextEnricher.OriginatorUtcTimestampPropertyName].ToString());
+            logEvent.Properties.Count.Should().Be(2);
+            logEvent.Properties[TrackingContextEnricher.CallChainIdPropertyName].ToString().Should().Be($"\"{currentTrackingContext.CallChainId}\"");
+            logEvent.Properties[TrackingContextEnricher.OriginatorUtcTimestampPropertyName].ToString().Should().Be($"\"{currentTrackingContext.OriginatorUtcTimestamp.ToString("o")}\"");
         }
 
-        [TestMethod]
-        public void TrackingContextEnricher_EnrichWithContextAndExtraHeaders_PropertiesAdded()
+        [Fact]
+        public void TrackingContextEnricher_GivenTrackingContextWithExtraHeaders_WhenEnricherApplied_ThenPropertiesAdded()
         {
             var extraHeaders = new Dictionary<string, string> {
                 { "FirstKey", "FirstValue" },
@@ -53,18 +53,18 @@ namespace Zametek.Utility.Logging.Tests
             TrackingContext.NewCurrent(extraHeaders);
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            Assert.IsNotNull(currentTrackingContext);
+            currentTrackingContext.Should().NotBeNull();
 
             var trackingContextEnricher = new TrackingContextEnricher();
             var logEvent = new LogEvent(DateTimeOffset.UtcNow, LogEventLevel.Information, null, new MessageTemplate(new List<MessageTemplateToken>()), new List<LogEventProperty>());
 
             trackingContextEnricher.Enrich(logEvent, null);
 
-            Assert.AreEqual(4, logEvent.Properties.Count);
-            Assert.AreEqual($"\"{currentTrackingContext.CallChainId}\"", logEvent.Properties[TrackingContextEnricher.CallChainIdPropertyName].ToString());
-            Assert.AreEqual($"\"{currentTrackingContext.OriginatorUtcTimestamp.ToString("o")}\"", logEvent.Properties[TrackingContextEnricher.OriginatorUtcTimestampPropertyName].ToString());
-            Assert.AreEqual("\"FirstValue\"", logEvent.Properties["FirstKey"].ToString());
-            Assert.AreEqual("\"SecondValue\"", logEvent.Properties["SecondKey"].ToString());
+            logEvent.Properties.Count.Should().Be(4);
+            logEvent.Properties[TrackingContextEnricher.CallChainIdPropertyName].ToString().Should().Be($@"""{currentTrackingContext.CallChainId}""");
+            logEvent.Properties[TrackingContextEnricher.OriginatorUtcTimestampPropertyName].ToString().Should().Be($@"""{currentTrackingContext.OriginatorUtcTimestamp.ToString("o")}""");
+            logEvent.Properties["FirstKey"].ToString().Should().Be(@"""FirstValue""");
+            logEvent.Properties["SecondKey"].ToString().Should().Be(@"""SecondValue""");
         }
     }
 }

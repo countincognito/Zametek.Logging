@@ -3,7 +3,7 @@
     public class TestBareDiagnosticLoggingService
         : ITestDiagnosticLoggingService
     {
-        public const string ReturnValue = "MyBareReturnString";
+        public const string ReturnValue = @"MyBareReturnString";
 
         #region Plain
 

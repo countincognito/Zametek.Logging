@@ -1,23 +1,23 @@
 ﻿using Castle.DynamicProxy;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Zametek.Utility.Logging.Tests
 {
-    [TestClass]
     public class AsyncTrackingInterceptorTests
     {
         private static readonly IProxyGenerator s_ProxyGenerator = new ProxyGenerator();
 
-        [TestMethod]
-        public async Task AsyncTrackingInterceptor_ReturnAsyncWithoutCurrent_NewTrackingContextReturned()
+        [Fact]
+        public async Task AsyncTrackingInterceptor_GivenNoTrackingContext_WhenReturnAsync_ThenNewTrackingContextReturned()
         {
             var instance = new TestTrackingService();
             var interceptor = new AsyncTrackingInterceptor();
 
             ITestTrackingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestTrackingService>(instance, interceptor.ToInterceptor());
 
-            Assert.IsNull(TrackingContext.Current);
+            TrackingContext.Current.Should().BeNull();
 
             TrackingContext returnedTrackingContext = null;
             await proxy.ReturnAsync(() =>
@@ -25,12 +25,12 @@ namespace Zametek.Utility.Logging.Tests
                 returnedTrackingContext = TrackingContext.Current;
             }).ConfigureAwait(false);
 
-            Assert.IsNotNull(returnedTrackingContext);
-            Assert.IsNull(TrackingContext.Current);
+            returnedTrackingContext.Should().NotBeNull();
+            TrackingContext.Current.Should().BeNull();
         }
 
-        [TestMethod]
-        public async Task AsyncTrackingInterceptor_ReturnAsyncWithCurrent_SameTrackingContextReturned()
+        [Fact]
+        public async Task AsyncTrackingInterceptor_GivenTrackingContext_WhenReturnAsync_ThenSameTrackingContextReturned()
         {
             var instance = new TestTrackingService();
             var interceptor = new AsyncTrackingInterceptor();
@@ -40,7 +40,7 @@ namespace Zametek.Utility.Logging.Tests
             TrackingContext.NewCurrent();
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            Assert.IsNotNull(currentTrackingContext);
+            currentTrackingContext.Should().NotBeNull();
 
             TrackingContext returnedTrackingContext = null;
             await proxy.ReturnAsync(() =>
@@ -48,33 +48,33 @@ namespace Zametek.Utility.Logging.Tests
                 returnedTrackingContext = TrackingContext.Current;
             }).ConfigureAwait(false);
 
-            Assert.IsNotNull(TrackingContext.Current);
-            Assert.AreEqual(TrackingContext.Current.CallChainId, currentTrackingContext.CallChainId);
-            Assert.AreEqual(TrackingContext.Current.OriginatorUtcTimestamp, currentTrackingContext.OriginatorUtcTimestamp);
+            TrackingContext.Current.Should().NotBeNull();
+            TrackingContext.Current.CallChainId.Should().Be(currentTrackingContext.CallChainId);
+            TrackingContext.Current.OriginatorUtcTimestamp.Should().Be(currentTrackingContext.OriginatorUtcTimestamp);
 
-            Assert.IsNotNull(returnedTrackingContext);
-            Assert.AreEqual(currentTrackingContext.CallChainId, returnedTrackingContext.CallChainId);
-            Assert.AreEqual(currentTrackingContext.OriginatorUtcTimestamp, returnedTrackingContext.OriginatorUtcTimestamp);
+            returnedTrackingContext.Should().NotBeNull();
+            returnedTrackingContext.CallChainId.Should().Be(currentTrackingContext.CallChainId);
+            returnedTrackingContext.OriginatorUtcTimestamp.Should().Be(currentTrackingContext.OriginatorUtcTimestamp);
         }
 
-        [TestMethod]
-        public async Task AsyncTrackingInterceptor_ReturnTrackingContextAsyncWithoutCurrent_NewTrackingContextReturned()
+        [Fact]
+        public async Task AsyncTrackingInterceptor_GivenNoTrackingContext_WhenReturnTrackingContextAsync_ThenNewTrackingContextReturned()
         {
             var instance = new TestTrackingService();
             var interceptor = new AsyncTrackingInterceptor();
 
             ITestTrackingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestTrackingService>(instance, interceptor.ToInterceptor());
 
-            Assert.IsNull(TrackingContext.Current);
+            TrackingContext.Current.Should().BeNull();
 
             TrackingContext returnedTrackingContext = await proxy.ReturnTrackingContextAsync().ConfigureAwait(false);
 
-            Assert.IsNotNull(returnedTrackingContext);
-            Assert.IsNull(TrackingContext.Current);
+            returnedTrackingContext.Should().NotBeNull();
+            TrackingContext.Current.Should().BeNull();
         }
 
-        [TestMethod]
-        public async Task AsyncTrackingInterceptor_ReturnTrackingContextAsyncWithCurrent_SameTrackingContextReturned()
+        [Fact]
+        public async Task AsyncTrackingInterceptor_GivenTrackingContext_WhenReturnTrackingContextAsync_ThenSameTrackingContextReturned()
         {
             var instance = new TestTrackingService();
             var interceptor = new AsyncTrackingInterceptor();
@@ -84,17 +84,17 @@ namespace Zametek.Utility.Logging.Tests
             TrackingContext.NewCurrent();
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            Assert.IsNotNull(currentTrackingContext);
+            currentTrackingContext.Should().NotBeNull();
 
             TrackingContext returnedTrackingContext = await proxy.ReturnTrackingContextAsync().ConfigureAwait(false);
 
-            Assert.IsNotNull(TrackingContext.Current);
-            Assert.AreEqual(TrackingContext.Current.CallChainId, currentTrackingContext.CallChainId);
-            Assert.AreEqual(TrackingContext.Current.OriginatorUtcTimestamp, currentTrackingContext.OriginatorUtcTimestamp);
+            TrackingContext.Current.Should().NotBeNull();
+            TrackingContext.Current.CallChainId.Should().Be(currentTrackingContext.CallChainId);
+            TrackingContext.Current.OriginatorUtcTimestamp.Should().Be(currentTrackingContext.OriginatorUtcTimestamp);
 
-            Assert.IsNotNull(returnedTrackingContext);
-            Assert.AreEqual(currentTrackingContext.CallChainId, returnedTrackingContext.CallChainId);
-            Assert.AreEqual(currentTrackingContext.OriginatorUtcTimestamp, returnedTrackingContext.OriginatorUtcTimestamp);
+            returnedTrackingContext.Should().NotBeNull();
+            returnedTrackingContext.CallChainId.Should().Be(currentTrackingContext.CallChainId);
+            returnedTrackingContext.OriginatorUtcTimestamp.Should().Be(currentTrackingContext.OriginatorUtcTimestamp);
         }
     }
 }

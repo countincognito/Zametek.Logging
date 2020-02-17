@@ -1,19 +1,20 @@
 ﻿using Castle.DynamicProxy;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using FluentAssertions;
 using Serilog;
 using System.Collections.Generic;
 using System.IO;
+using Xunit;
 
 namespace Zametek.Utility.Logging.Tests
 {
     public partial class AsyncDiagnosticLoggingInterceptorTests
     {
-        private static ITestDiagnosticLoggingService CreateInactiveClassProxy(StringWriter returnOutput, StringWriter paramsOutput)
+        private static ITestDiagnosticLoggingService CreateGivenInactiveClass_WhenProxy(StringWriter returnOutput, StringWriter paramsOutput)
         {
-            return CreateInactiveClassProxy(returnOutput, paramsOutput, new HashSet<string>());
+            return CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput, new HashSet<string>());
         }
 
-        private static ITestDiagnosticLoggingService CreateInactiveClassProxy(
+        private static ITestDiagnosticLoggingService CreateGivenInactiveClass_WhenProxy(
             StringWriter returnOutput,
             StringWriter paramsOutput,
             HashSet<string> filterTheseParameters)
@@ -33,405 +34,405 @@ namespace Zametek.Utility.Logging.Tests
 
         #region Plain
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassNoParamsReturnVoid_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenNoParamsReturnVoid_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
             proxy.NoParamsReturnVoid();
 
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassSomeParamsReturnVoid_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenSomeParamsReturnVoid_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.SomeParamsReturnVoid(m_FirstParam, m_SecondParam);
+            proxy.SomeParamsReturnVoid(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassNoParamsReturnString_OutputEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenNoParamsReturnString_ThenOutputEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
             string returnValue = proxy.NoParamsReturnString();
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassSomeParamsReturnString_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenSomeParamsReturnString_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.SomeParamsReturnString(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.SomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassSomeParamsReturnVoidActiveParamsActiveReturn_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenSomeParamsReturnVoidActiveParamsActiveReturn_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.SomeParamsReturnVoidActiveParamsActiveReturn(m_FirstParam, m_SecondParam);
+            proxy.SomeParamsReturnVoidActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(AsyncDiagnosticLoggingInterceptor.VoidSubstitute, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassSomeParamsReturnStringActiveParamsActiveReturn_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenSomeParamsReturnStringActiveParamsActiveReturn_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.SomeParamsReturnStringActiveParamsActiveReturn(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.SomeParamsReturnStringActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(returnValue, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(returnValue);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassSomeParamsReturnVoidInactiveParamsInactiveReturn_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenSomeParamsReturnVoidInactiveParamsInactiveReturn_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.SomeParamsReturnVoidInactiveParamsInactiveReturn(m_FirstParam, m_SecondParam);
+            proxy.SomeParamsReturnVoidInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassSomeParamsReturnStringInactiveParamsInactiveReturn_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenSomeParamsReturnStringInactiveParamsInactiveReturn_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.SomeParamsReturnStringInactiveParamsInactiveReturn(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.SomeParamsReturnStringInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
         #endregion
 
         #region Active
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveNoParamsReturnVoid_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveNoParamsReturnVoid_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
             proxy.ActiveNoParamsReturnVoid();
 
-            Assert.AreEqual(AsyncDiagnosticLoggingInterceptor.VoidSubstitute, returnOutput.ToString());
-            Assert.AreEqual(m_NoParamsLogReturn, paramsOutput.ToString());
+            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().Should().Be(s_NoParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnVoid_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnVoid_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.ActiveSomeParamsReturnVoid(m_FirstParam, m_SecondParam);
+            proxy.ActiveSomeParamsReturnVoid(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(AsyncDiagnosticLoggingInterceptor.VoidSubstitute, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveNoParamsReturnString_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveNoParamsReturnString_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
             string returnValue = proxy.ActiveNoParamsReturnString();
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(returnValue, returnOutput.ToString());
-            Assert.AreEqual(m_NoParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(returnValue);
+            paramsOutput.ToString().Should().Be(s_NoParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnString_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnString_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.ActiveSomeParamsReturnString(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.ActiveSomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(returnValue, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(returnValue);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnVoidActiveParamsActiveReturn_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnVoidActiveParamsActiveReturn_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.ActiveSomeParamsReturnVoidActiveParamsActiveReturn(m_FirstParam, m_SecondParam);
+            proxy.ActiveSomeParamsReturnVoidActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(AsyncDiagnosticLoggingInterceptor.VoidSubstitute, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnStringActiveParamsActiveReturn_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnStringActiveParamsActiveReturn_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.ActiveSomeParamsReturnStringActiveParamsActiveReturn(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.ActiveSomeParamsReturnStringActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(returnValue, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(returnValue);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnVoidInactiveParamsInactiveReturn_OutputsFiltered()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnVoidInactiveParamsInactiveReturn_ThenOutputsFiltered()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.ActiveSomeParamsReturnVoidInactiveParamsInactiveReturn(m_FirstParam, m_SecondParam);
+            proxy.ActiveSomeParamsReturnVoidInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute, returnOutput.ToString());
-            Assert.AreEqual(m_FilteredParamsLogReturn, paramsOutput.ToString());
+            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute);
+            paramsOutput.ToString().Should().Be(s_FilteredParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnStringInactiveParamsInactiveReturn_OutputsFiltered()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnStringInactiveParamsInactiveReturn_ThenOutputsFiltered()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.ActiveSomeParamsReturnStringInactiveParamsInactiveReturn(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.ActiveSomeParamsReturnStringInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute, returnOutput.ToString());
-            Assert.AreEqual(m_FilteredParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute);
+            paramsOutput.ToString().Should().Be(s_FilteredParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnStringFilterTheseParameters_ParameterOutputsFiltered()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnStringFilterTheseParameters_ThenParameterOutputsFiltered()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput, new HashSet<string> { @"param1", @"param2" });
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput, new HashSet<string> { @"param1", @"param2" });
 
-            string returnValue = proxy.ActiveSomeParamsReturnString(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.ActiveSomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(returnValue, returnOutput.ToString());
-            Assert.AreEqual(m_FilteredParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(returnValue);
+            paramsOutput.ToString().Should().Be(s_FilteredParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnStringDoNotFilterTheseParameters_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnStringDoNotFilterTheseParameters_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput, new HashSet<string> { @"random1", @"random2" });
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput, new HashSet<string> { @"random1", @"random2" });
 
-            string returnValue = proxy.ActiveSomeParamsReturnString(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.ActiveSomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(returnValue, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(returnValue);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassActiveSomeParamsReturnStringActiveParamsActiveReturnFilterTheseParameters_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenActiveSomeParamsReturnStringActiveParamsActiveReturnFilterTheseParameters_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput, new HashSet<string> { @"param1", @"param2" });
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput, new HashSet<string> { @"param1", @"param2" });
 
-            string returnValue = proxy.ActiveSomeParamsReturnStringActiveParamsActiveReturn(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.ActiveSomeParamsReturnStringActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(returnValue, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(returnValue);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
         #endregion
 
         #region Inactive
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassInactiveNoParamsReturnVoid_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenInactiveNoParamsReturnVoid_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
             proxy.InactiveNoParamsReturnVoid();
 
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassInactiveSomeParamsReturnVoid_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenInactiveSomeParamsReturnVoid_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.InactiveSomeParamsReturnVoid(m_FirstParam, m_SecondParam);
+            proxy.InactiveSomeParamsReturnVoid(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassInactiveNoParamsReturnString_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenInactiveNoParamsReturnString_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
             string returnValue = proxy.InactiveNoParamsReturnString();
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassInactiveSomeParamsReturnString_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenInactiveSomeParamsReturnString_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.InactiveSomeParamsReturnString(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.InactiveSomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassInactiveSomeParamsReturnVoidActiveParamsActiveReturn_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenInactiveSomeParamsReturnVoidActiveParamsActiveReturn_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.InactiveSomeParamsReturnVoidActiveParamsActiveReturn(m_FirstParam, m_SecondParam);
+            proxy.InactiveSomeParamsReturnVoidActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(AsyncDiagnosticLoggingInterceptor.VoidSubstitute, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassInactiveSomeParamsReturnStringActiveParamsActiveReturn_OutputsPopulated()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenInactiveSomeParamsReturnStringActiveParamsActiveReturn_ThenOutputsPopulated()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.InactiveSomeParamsReturnStringActiveParamsActiveReturn(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.InactiveSomeParamsReturnStringActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(returnValue, returnOutput.ToString());
-            Assert.AreEqual(m_ParamsLogReturn, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().Be(returnValue);
+            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassInactiveSomeParamsReturnVoidInactiveParamsInactiveReturn_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenInactiveSomeParamsReturnVoidInactiveParamsInactiveReturn_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            proxy.InactiveSomeParamsReturnVoidInactiveParamsInactiveReturn(m_FirstParam, m_SecondParam);
+            proxy.InactiveSomeParamsReturnVoidInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
-        [TestMethod]
-        public void AsyncDiagnosticLoggingInterceptor_InactiveClassInactiveSomeParamsReturnStringInactiveParamsInactiveReturn_OutputsEmpty()
+        [Fact]
+        public void AsyncDiagnosticLoggingInterceptor_GivenInactiveClass_WhenInactiveSomeParamsReturnStringInactiveParamsInactiveReturn_ThenOutputsEmpty()
         {
             var returnOutput = new StringWriter();
             var paramsOutput = new StringWriter();
 
-            ITestDiagnosticLoggingService proxy = CreateInactiveClassProxy(returnOutput, paramsOutput);
+            ITestDiagnosticLoggingService proxy = CreateGivenInactiveClass_WhenProxy(returnOutput, paramsOutput);
 
-            string returnValue = proxy.InactiveSomeParamsReturnStringInactiveParamsInactiveReturn(m_FirstParam, m_SecondParam);
+            string returnValue = proxy.InactiveSomeParamsReturnStringInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            Assert.AreEqual(TestInactiveDiagnosticLoggingService.ReturnValue, returnValue);
-            Assert.AreEqual(string.Empty, returnOutput.ToString());
-            Assert.AreEqual(string.Empty, paramsOutput.ToString());
+            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().Should().BeEmpty();
+            paramsOutput.ToString().Should().BeEmpty();
         }
 
         #endregion

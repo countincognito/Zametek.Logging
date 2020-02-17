@@ -1,16 +1,16 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
 using Serilog.Events;
 using Serilog.Parsing;
 using System;
 using System.Collections.Generic;
+using Xunit;
 
 namespace Zametek.Utility.Logging.Tests
 {
-    [TestClass]
     public partial class InvocationEnricherTests
     {
-        [TestMethod]
-        public void InvocationEnricher_Enrich_PropertiesAdded()
+        [Fact]
+        public void InvocationEnricher_GivenTestInvocation_WhenEnricherApplied_ThenPropertiesAdded()
         {
             var invocation = new TestInvocation();
             var invocationEnricher = new InvocationEnricher(invocation);
@@ -18,10 +18,10 @@ namespace Zametek.Utility.Logging.Tests
 
             invocationEnricher.Enrich(logEvent, null);
 
-            Assert.AreEqual(3, logEvent.Properties.Count);
-            Assert.AreEqual($"\"{invocation.TargetType.Namespace}\"", logEvent.Properties[InvocationEnricher.NamespacePropertyName].ToString());
-            Assert.AreEqual($"\"{invocation.TargetType.Name}\"", logEvent.Properties[InvocationEnricher.TypePropertyName].ToString());
-            Assert.AreEqual($"\"{invocation.Method.Name}\"", logEvent.Properties[InvocationEnricher.MethodPropertyName].ToString());
+            logEvent.Properties.Count.Should().Be(3);
+            logEvent.Properties[InvocationEnricher.NamespacePropertyName].ToString().Should().Be($@"""{invocation.TargetType.Namespace}""");
+            logEvent.Properties[InvocationEnricher.TypePropertyName].ToString().Should().Be($@"""{invocation.TargetType.Name}""");
+            logEvent.Properties[InvocationEnricher.MethodPropertyName].ToString().Should().Be($@"""{invocation.Method.Name}""");
         }
     }
 }

@@ -4,7 +4,7 @@
     public class TestActiveDiagnosticLoggingService
         : ITestDiagnosticLoggingService
     {
-        public const string ReturnValue = "MyActiveReturnString";
+        public const string ReturnValue = @"MyActiveReturnString";
 
         #region Plain
 

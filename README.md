@@ -454,7 +454,7 @@ The following fields have been added to the log enrichment where necessary:
 
 ## Samples
 
-For some working examples of `LogProxy` in action, either see the test project in [Zametek.Utility.Logging.AspNetCore](https://github.com/countincognito/Zametek.Utility.Logging.AspNetCore), or see the following examples:
+For some working examples of `LogProxy` in action, either see the test project in [Zametek.Utility.Logging.AspNetCore.TestApi](test/Zametek.Utility.Logging.AspNetCore.TestApi), or see the following examples:
 
 - [Company.ServiceFabric](https://github.com/countincognito/Company.ServiceFabric)
 - [Company.Grpc](https://github.com/countincognito/Company.Grpc)
