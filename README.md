@@ -1,12 +1,12 @@
+# Zametek.Utility.Logging
+
 [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging "NuGet Version") **Zametek.Utility.Logging**
 
 [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.AspNetCore.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging.AspNetCore "NuGet Version") **Zametek.Utility.Logging.AspNetCore**
 
 [![Gitter](https://badges.gitter.im/Zametek-Utility-Logging/Lobby.svg)](https://gitter.im/Zametek-Utility-Logging/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) **Chat**
 
-# Zametek.Utility.Logging
-
-## What is Zametek.Utility.Logging?
+## Overview
 
 **Zametek.Utility.Logging** is a simple DotNet utility framework designed to provide rich, contextual logging for classes that are used as injected dependencies.
 
@@ -19,7 +19,7 @@ Out-of-the-box it provides automatic:
 - Method-call performance logging, and
 - Detailed diagnostic logging at the class, method and parameter level
 
-## How does it work?
+## The way it works
 
 The key component is the `LogProxy` class, which uses static `Create()` methods to wrap a class instance in a number of interceptor layers and then creates an interface-derived logging proxy using [Castle DynamicProxy](https://www.castleproject.org/projects/dynamicproxy/). Each of the interceptor layers provides a separate and distinct logging capability, which can be included or excluded as necessary.
 
@@ -143,14 +143,14 @@ The `AsyncDiagnosticLoggingInterceptor` logs data on an explicit 'on'/'off' mode
 The 'on'/'off' model is configured according to a nested hierarchy:
 
 - **Classes** are the top level of the hierarchy, they are also the parents of **methods**, and grandparents of **input parameters** and **return values**
-    - If a class turns diagnostic logging 'on' or 'off', then diagnostic logging will be turned 'on' or 'off' for all of its descendents too
-    - However, each individual descendent can explicitly turn diagnostic logging 'on' or 'off' if it chooses
+  - If a class turns diagnostic logging 'on' or 'off', then diagnostic logging will be turned 'on' or 'off' for all of its descendents too
+  - However, each individual descendent can explicitly turn diagnostic logging 'on' or 'off' if it chooses
 - **Methods** are the children of **classes**, and the parents of **input parameters** and **return values**
-    - A method can have diagnostic logging turned 'on' or 'off' either explicitly or by virtue of its parent class doing the same
-    - If a method has diagnostic logging turned 'on' or 'off', then diagnostic logging will be turned 'on' or 'off' for all of its descendents too
-    - However, each individual descendent can explicitly turn diagnostic logging 'on' or 'off' if it chooses
+  - A method can have diagnostic logging turned 'on' or 'off' either explicitly or by virtue of its parent class doing the same
+  - If a method has diagnostic logging turned 'on' or 'off', then diagnostic logging will be turned 'on' or 'off' for all of its descendents too
+  - However, each individual descendent can explicitly turn diagnostic logging 'on' or 'off' if it chooses
 - **Input parameters** and **return values** are the children of **methods**, and the grandchildren of **classes**
-    - An input parameter or return value can have diagnostic logging turned 'on' or 'off' either explicitly or by virtue of its parent method doing the same
+  - An input parameter or return value can have diagnostic logging turned 'on' or 'off' either explicitly or by virtue of its parent method doing the same
 
 This model is configured by applying the `DiagnosticLoggingAttribute` at different levels in the nested hierarchy.
 
@@ -397,7 +397,7 @@ Log.Logger = serilog;
 IValueAccess valueAccess = new ValueAccess(serilog);
 
 // This is functionally equivalent to LogType.All
-LogType logTypes = LogType.Tracking | LogType.Error | LogType.Performance | LogType.Diagnostic; 
+LogType logTypes = LogType.Tracking | LogType.Error | LogType.Performance | LogType.Diagnostic;
 
 // Wrapping a class in a LogProxy automatically enriches the serilog output.
 var valueAccess = LogProxy.Create<IValueAccess>(valueAccess, serilog, logTypes);
@@ -429,9 +429,9 @@ The log outputs when calling `GetAllAsync` from the above example would look sim
 The following fields have been added to the log enrichment where necessary:
 
 - `LogType`: using the default interceptors, this value can be either:
-    - `Performance`
-    - `Error`, or
-    - `Diagnostic`
+  - `Performance`
+  - `Error`, or
+  - `Diagnostic`
 - `Namespace`: this provides the namespace of the parent class from where the logging proxy method call was initiated
 - `Type`: this provides the type name of the parent class from where the logging proxy method call was initiated
 - `Method`: this provides the name of the logging proxy method call itself
@@ -439,12 +439,12 @@ The following fields have been added to the log enrichment where necessary:
 - `OriginatorUtcTimestamp`: this is added by the `AsyncTrackingInterceptor` and provides a UTC timestamp for when the `TrackingContext` (and hence the call-chain) was initiated
 - `ElapsedMilliseconds`: this is added by the `AsyncPerformanceLoggingInterceptor` and provides the number of milliseconds it takes for a logging proxy method call to return
 - `Arguments`: this is added by the `AsyncDiagnosticLoggingInterceptor` and shows a break down of the input parameters that are used in a logging proxy method call. Note the following:
-    - Using the **Destructurama** extensions for **Serilog** will automatically exclude specific named properties from destructured objects (such as the `Email` property in `RequestDto`)
-    - The special value `__FILTERED__` will be used when an input parameter is marked as 'off' (either implicitly or explicitly), or when it appears in the `FilterTheseParameters` collection (such as the `Password` input parameter in the `AddAsync` method)
+  - Using the **Destructurama** extensions for **Serilog** will automatically exclude specific named properties from destructured objects (such as the `Email` property in`RequestDto`)
+  - The special value `__FILTERED__` will be used when an input parameter is marked as 'off' (either implicitly or explicitly), or when it appears in the `FilterTheseParameters`collection (such as the `Password` input parameter in the `AddAsync` method)
 - `ReturnValue`: this is added by the `AsyncDiagnosticLoggingInterceptor` and shows a break down of the return value that is returned from a logging proxy method call. Note the following:
-    - As with the `Arguments` field, using the **Destructurama** extensions for **Serilog** will automatically exclude specific named properties from destructured objects (such as the `Email` and `Password` properties in `ResponseDto`)
-    - The special value `__FILTERED__` will be used when a return value is marked as 'off' (either implicitly or explicitly)
-    - The special value `__VOID__` will be used when a method call has no return value
+  - As with the `Arguments` field, using the **Destructurama** extensions for **Serilog** will automatically exclude specific named properties from destructured objects (such as  the `Email` and `Password` properties in `ResponseDto`)
+  - The special value `__FILTERED__` will be used when a return value is marked as 'off' (either implicitly or explicitly)
+  - The special value `__VOID__` will be used when a method call has no return value
 
 The log outputs when an exception is generated from the above example would look similar to the following:
 
@@ -453,7 +453,7 @@ The log outputs when an exception is generated from the above example would look
 The following fields have been added to the log enrichment where necessary:
 
 - `ExceptionDetail`: this is added by the `AsyncErrorLoggingInterceptor` and provides more meaningful message details whenever an exception occurs within a logging proxy method call
-    - The extraction of the message details is done using [Serilog.Exceptions](https://github.com/RehanSaeed/Serilog.Exceptions)
+  - The extraction of the message details is done using [Serilog.Exceptions](https://github.com/RehanSaeed/Serilog.Exceptions)
 
 ## Samples
 
