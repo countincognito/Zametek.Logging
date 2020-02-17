@@ -1,7 +1,8 @@
-| --- | --- |
-| **Zametek.Utility.Logging** | [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging "NuGet Version") |
-| **Zametek.Utility.Logging.AspNetCore** | [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.AspNetCore.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging.AspNetCore "NuGet Version") |
-| **Chat** | [![Gitter](https://badges.gitter.im/Zametek-Utility-Logging/Lobby.svg)](https://gitter.im/Zametek-Utility-Logging/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) |
+[![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging "NuGet Version") **Zametek.Utility.Logging**
+
+[![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.AspNetCore.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging.AspNetCore "NuGet Version") **Zametek.Utility.Logging.AspNetCore**
+
+[![Gitter](https://badges.gitter.im/Zametek-Utility-Logging/Lobby.svg)](https://gitter.im/Zametek-Utility-Logging/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) **Chat**
 
 # Zametek.Utility.Logging
 
