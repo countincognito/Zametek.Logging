@@ -5,14 +5,22 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>Zametek utility logging classes for AspNet Core.</Description>
     <Copyright>Copyright (c) 2020 Riccardo M Bennett-Lovsey</Copyright>
-    <PackageLicenseUrl>https://github.com/countincognito/Zametek.Utility.Logging/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Utility.Logging</PackageProjectUrl>
     <Version>0.7.6</Version>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Zametek.Utility.Logging" Version="0.7.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
