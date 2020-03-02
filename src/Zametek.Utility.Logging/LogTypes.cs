@@ -3,7 +3,7 @@
 namespace Zametek.Utility.Logging
 {
     [Flags]
-    public enum LogType
+    public enum LogTypes
     {
         None = 0,
         Tracking = 1 << 0,

@@ -10,7 +10,7 @@ namespace Zametek.Utility.Logging
     public class AsyncErrorLoggingInterceptor
         : AsyncInterceptorBase
     {
-        public const string LogTypeName = nameof(LogType);
+        public const string LogTypesName = nameof(LogTypes);
         private readonly ILogger m_Logger;
         private readonly IDestructuringOptions m_DestructuringOptions;
 
@@ -22,6 +22,15 @@ namespace Zametek.Utility.Logging
 
         protected override async Task InterceptAsync(IInvocation invocation, Func<IInvocation, Task> proceed)
         {
+            if (invocation == null)
+            {
+                throw new ArgumentNullException(nameof(invocation));
+            }
+            if (proceed == null)
+            {
+                throw new ArgumentNullException(nameof(proceed));
+            }
+
             try
             {
                 await proceed(invocation).ConfigureAwait(false);
@@ -35,6 +44,15 @@ namespace Zametek.Utility.Logging
 
         protected override async Task<T> InterceptAsync<T>(IInvocation invocation, Func<IInvocation, Task<T>> proceed)
         {
+            if (invocation == null)
+            {
+                throw new ArgumentNullException(nameof(invocation));
+            }
+            if (proceed == null)
+            {
+                throw new ArgumentNullException(nameof(proceed));
+            }
+
             try
             {
                 return await proceed(invocation).ConfigureAwait(false);
@@ -52,7 +70,8 @@ namespace Zametek.Utility.Logging
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
-            using (LogContext.PushProperty(LogTypeName, LogType.Error))
+
+            using (LogContext.PushProperty(LogTypesName, LogTypes.Error))
             using (LogContext.Push(new InvocationEnricher(invocation)))
             using (LogContext.Push(new ExceptionEnricher(m_DestructuringOptions)))
             {
@@ -66,6 +85,7 @@ namespace Zametek.Utility.Logging
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
+
             return $"error-{invocation.TargetType?.Namespace}.{invocation.TargetType?.Name}.{invocation.Method?.Name}";
         }
     }

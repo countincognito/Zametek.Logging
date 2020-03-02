@@ -4,19 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Zametek.Utility.Logging
 {
-    public class LogProxy
+    public static class LogProxy
     {
         private static readonly IProxyGenerator s_ProxyGenerator = new ProxyGenerator();
-        private const LogType c_DefaultLogType = LogType.Tracking | LogType.Error | LogType.Performance;
+        private const LogTypes c_DefaultLogTypes = LogTypes.Tracking | LogTypes.Error | LogTypes.Performance;
 
-        public static I Create<I>(
-            I instance,
+        public static T Create<T>(
+            T instance,
             ILogger logger,
-            LogType logType = c_DefaultLogType,
-            params IInterceptor[] extraInterceptors) where I : class
+            LogTypes logTypes = c_DefaultLogTypes,
+            params IInterceptor[] extraInterceptors) where T : class
         {
             if (instance == null)
             {
@@ -27,8 +28,8 @@ namespace Zametek.Utility.Logging
                 throw new ArgumentNullException(nameof(logger));
             }
 
-            Debug.Assert(typeof(I).IsInterface);
-            List<IInterceptor> interceptors = BuildStandardInterceptors(instance, logger, logType);
+            Debug.Assert(typeof(T).GetTypeInfo().IsInterface);
+            List<IInterceptor> interceptors = BuildStandardInterceptors(instance, logger, logTypes);
 
             if (extraInterceptors != null && extraInterceptors.Any())
             {
@@ -42,7 +43,7 @@ namespace Zametek.Utility.Logging
             Type instanceType,
             object instance,
             ILogger logger,
-            LogType logType = c_DefaultLogType,
+            LogTypes logTypes = c_DefaultLogTypes,
             params IInterceptor[] extraInterceptors)
         {
             if (instance == null)
@@ -54,8 +55,8 @@ namespace Zametek.Utility.Logging
                 throw new ArgumentNullException(nameof(logger));
             }
 
-            Debug.Assert(instanceType.IsInterface);
-            List<IInterceptor> interceptors = BuildStandardInterceptors(instance, logger, logType);
+            Debug.Assert(instanceType.GetTypeInfo().IsInterface);
+            List<IInterceptor> interceptors = BuildStandardInterceptors(instance, logger, logTypes);
 
             if (extraInterceptors != null && extraInterceptors.Any())
             {
@@ -67,7 +68,7 @@ namespace Zametek.Utility.Logging
 
         public static HashSet<string> FilterTheseParameters { get; } = new HashSet<string> { "password", "PASSWORD", "Password", "secret", "SECRET", "Secret" };
 
-        private static List<IInterceptor> BuildStandardInterceptors(object instance, ILogger logger, LogType logType)
+        private static List<IInterceptor> BuildStandardInterceptors(object instance, ILogger logger, LogTypes logTypes)
         {
             if (instance == null)
             {
@@ -80,22 +81,22 @@ namespace Zametek.Utility.Logging
 
             var interceptors = new List<IInterceptor>();
 
-            if (logType.HasFlag(LogType.Tracking))
+            if (logTypes.HasFlag(LogTypes.Tracking))
             {
                 interceptors.Add(new AsyncTrackingInterceptor().ToInterceptor());
             }
 
-            if (logType.HasFlag(LogType.Error))
+            if (logTypes.HasFlag(LogTypes.Error))
             {
                 interceptors.Add(new AsyncErrorLoggingInterceptor(logger).ToInterceptor());
             }
 
-            if (logType.HasFlag(LogType.Performance))
+            if (logTypes.HasFlag(LogTypes.Performance))
             {
                 interceptors.Add(new AsyncPerformanceLoggingInterceptor(logger).ToInterceptor());
             }
 
-            if (logType.HasFlag(LogType.Diagnostic))
+            if (logTypes.HasFlag(LogTypes.Diagnostic))
             {
                 interceptors.Add(new AsyncDiagnosticLoggingInterceptor(logger, FilterTheseParameters).ToInterceptor());
             }

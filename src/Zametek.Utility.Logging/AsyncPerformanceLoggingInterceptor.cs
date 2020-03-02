@@ -1,4 +1,4 @@
-﻿    using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using Serilog;
 using Serilog.Context;
 using System;
@@ -9,7 +9,7 @@ namespace Zametek.Utility.Logging
     public class AsyncPerformanceLoggingInterceptor
         : AsyncTimingInterceptor
     {
-        public const string LogTypeName = nameof(LogType);
+        public const string LogTypesName = nameof(LogTypes);
         private readonly ILogger m_Logger;
 
         public AsyncPerformanceLoggingInterceptor(ILogger logger)
@@ -19,7 +19,12 @@ namespace Zametek.Utility.Logging
 
         protected override void StartingTiming(IInvocation invocation)
         {
-            using (LogContext.PushProperty(LogTypeName, LogType.Performance))
+            if (invocation == null)
+            {
+                throw new ArgumentNullException(nameof(invocation));
+            }
+
+            using (LogContext.PushProperty(LogTypesName, LogTypes.Performance))
             using (LogContext.Push(new InvocationEnricher(invocation)))
             {
                 m_Logger.Information($"{GetSourceMessage(invocation)} invocation started");
@@ -28,9 +33,18 @@ namespace Zametek.Utility.Logging
 
         protected override void CompletedTiming(IInvocation invocation, Stopwatch state)
         {
+            if (invocation == null)
+            {
+                throw new ArgumentNullException(nameof(invocation));
+            }
+            if (state == null)
+            {
+                throw new ArgumentNullException(nameof(state));
+            }
+
             long elapsedMilliseconds = state.ElapsedMilliseconds;
 
-            using (LogContext.PushProperty(LogTypeName, LogType.Performance))
+            using (LogContext.PushProperty(LogTypesName, LogTypes.Performance))
             using (LogContext.Push(new InvocationEnricher(invocation)))
             {
                 m_Logger.Information($"{GetSourceMessage(invocation)} invocation ended, ElapsedMilliseconds: {{ElapsedMilliseconds}}", elapsedMilliseconds);
@@ -43,6 +57,7 @@ namespace Zametek.Utility.Logging
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
+
             return $"performance-{invocation.TargetType?.Namespace}.{invocation.TargetType?.Name}.{invocation.Method?.Name}";
         }
     }

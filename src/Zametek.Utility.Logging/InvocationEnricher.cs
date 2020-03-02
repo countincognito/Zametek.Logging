@@ -30,7 +30,11 @@ namespace Zametek.Utility.Logging
         /// <param name="propertyFactory">Factory for creating new properties to add to the event.</param>
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
-            Debug.Assert(logEvent != null);
+            if (logEvent == null)
+            {
+                throw new ArgumentNullException(nameof(logEvent));
+            }
+
             Debug.Assert(m_Invocation.TargetType != null);
             Debug.Assert(m_Invocation.Method != null);
 

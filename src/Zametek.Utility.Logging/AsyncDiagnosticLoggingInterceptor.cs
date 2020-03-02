@@ -13,7 +13,7 @@ namespace Zametek.Utility.Logging
     public class AsyncDiagnosticLoggingInterceptor
         : ProcessingAsyncInterceptor<DiagnosticLogState>
     {
-        public const string LogTypeName = nameof(LogType);
+        public const string LogTypesName = nameof(LogTypes);
         public const string ArgumentsName = nameof(IInvocation.Arguments);
         public const string ReturnValueName = nameof(IInvocation.ReturnValue);
         public const string VoidSubstitute = @"__VOID__";
@@ -34,18 +34,20 @@ namespace Zametek.Utility.Logging
 
         protected override DiagnosticLogState StartingInvocation(IInvocation invocation)
         {
-            Debug.Assert(invocation != null);
+            if (invocation == null)
+            {
+                throw new ArgumentNullException(nameof(invocation));
+            }
             Debug.Assert(invocation.TargetType != null);
 
             LogActive classActiveState = LogActive.Off;
 
             // Check for DiagnosticLogging Class scope.
-            var classDiagnosticAttribute = invocation
-                .TargetType
-                .GetCustomAttributes(typeof(DiagnosticLoggingAttribute), false)
-                .FirstOrDefault() as DiagnosticLoggingAttribute;
 
-            if (classDiagnosticAttribute != null)
+            if (invocation
+                .TargetType.GetTypeInfo()
+                .GetCustomAttributes(typeof(DiagnosticLoggingAttribute), false)
+                .FirstOrDefault() is DiagnosticLoggingAttribute classDiagnosticAttribute)
             {
                 classActiveState = classDiagnosticAttribute.LogActive;
             }
@@ -60,8 +62,12 @@ namespace Zametek.Utility.Logging
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
+            if (activeState == null)
+            {
+                throw new ArgumentNullException(nameof(activeState));
+            }
 
-            LogActive classActiveState = activeState;
+            LogActive classActiveState = activeState.ActiveState;
             LogMethodAfterInvocation(invocation, classActiveState, returnValue);
         }
 
@@ -77,19 +83,21 @@ namespace Zametek.Utility.Logging
             Debug.Assert(methodInfo != null);
 
             // Check for DiagnosticLogging Method scope.
-            var methodDiagnosticAttribute = methodInfo
-                .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) as DiagnosticLoggingAttribute;
 
-            if (methodDiagnosticAttribute != null)
+            if (methodInfo
+                .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) is DiagnosticLoggingAttribute methodDiagnosticAttribute)
             {
                 methodActiveState = methodDiagnosticAttribute.LogActive;
             }
 
-            (IList<object> filteredParameters, LogActive anyParametersToLog) = FilterParameters(invocation, methodInfo, methodActiveState, m_FilterTheseParameters);
+            Tuple<IList<object>, LogActive> filteredParametersTuple = FilterParameters(invocation, methodInfo, methodActiveState, m_FilterTheseParameters);
+
+            IList<object> filteredParameters = filteredParametersTuple.Item1;
+            LogActive anyParametersToLog = filteredParametersTuple.Item2;
 
             if (anyParametersToLog == LogActive.On)
             {
-                using (LogContext.PushProperty(LogTypeName, LogType.Diagnostic))
+                using (LogContext.PushProperty(LogTypesName, LogTypes.Diagnostic))
                 using (LogContext.Push(new InvocationEnricher(invocation)))
                 using (LogContext.PushProperty(ArgumentsName, filteredParameters, destructureObjects: true))
                 {
@@ -101,7 +109,7 @@ namespace Zametek.Utility.Logging
             return methodActiveState;
         }
 
-        private static (IList<object>, LogActive) FilterParameters(
+        private static Tuple<IList<object>, LogActive> FilterParameters(
             IInvocation invocation,
             MethodInfo methodInfo,
             LogActive activeState,
@@ -128,7 +136,7 @@ namespace Zametek.Utility.Logging
 
             Debug.Assert(parameterInfos.Length == parameters.Length);
 
-            var filteredParameters = new List<object>();
+            IList<object> filteredParameters = new List<object>();
 
             // Send a message back whether anything should be logged.
             LogActive anyParametersToLog = activeState;
@@ -145,10 +153,9 @@ namespace Zametek.Utility.Logging
                 }
 
                 // Check for DiagnosticLogging Parameter scope.
-                var parameterDiagnosticAttribute = parameterInfo
-                    .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) as DiagnosticLoggingAttribute;
 
-                if (parameterDiagnosticAttribute != null)
+                if (parameterInfo
+                    .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) is DiagnosticLoggingAttribute parameterDiagnosticAttribute)
                 {
                     parameterActiveState = parameterDiagnosticAttribute.LogActive;
                 }
@@ -164,7 +171,7 @@ namespace Zametek.Utility.Logging
                 filteredParameters.Add(parameterValue);
             }
 
-            return (filteredParameters, anyParametersToLog);
+            return Tuple.Create(filteredParameters, anyParametersToLog);
         }
 
         private void LogMethodAfterInvocation(IInvocation invocation, LogActive activeState, object returnValue)
@@ -178,11 +185,14 @@ namespace Zametek.Utility.Logging
             MethodInfo methodInfo = invocation.MethodInvocationTarget;
             Debug.Assert(methodInfo != null);
 
-            (object filteredReturnValue, LogActive anyParametersToLog) = FilterReturnValue(methodInfo, methodActiveState, returnValue);
+            Tuple<object, LogActive> filteredReturnValueTuple = FilterReturnValue(methodInfo, methodActiveState, returnValue);
+
+            object filteredReturnValue = filteredReturnValueTuple.Item1;
+            LogActive anyParametersToLog = filteredReturnValueTuple.Item2;
 
             if (anyParametersToLog == LogActive.On)
             {
-                using (LogContext.PushProperty(LogTypeName, LogType.Diagnostic))
+                using (LogContext.PushProperty(LogTypesName, LogTypes.Diagnostic))
                 using (LogContext.Push(new InvocationEnricher(invocation)))
                 using (LogContext.PushProperty(ReturnValueName, filteredReturnValue, destructureObjects: true))
                 {
@@ -192,7 +202,7 @@ namespace Zametek.Utility.Logging
             }
         }
 
-        private static (object, LogActive) FilterReturnValue(MethodInfo methodInfo, LogActive activeState, object returnValue)
+        private static Tuple<object, LogActive> FilterReturnValue(MethodInfo methodInfo, LogActive activeState, object returnValue)
         {
             if (methodInfo == null)
             {
@@ -204,10 +214,9 @@ namespace Zametek.Utility.Logging
             Debug.Assert(parameterInfo != null);
 
             // Check for DiagnosticLogging ReturnValue scope.
-            var returnValueDiagnosticAttribute = parameterInfo
-                .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) as DiagnosticLoggingAttribute;
 
-            if (returnValueDiagnosticAttribute != null)
+            if (parameterInfo
+                .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) is DiagnosticLoggingAttribute returnValueDiagnosticAttribute)
             {
                 returnParameterActiveState = returnValueDiagnosticAttribute.LogActive;
             }
@@ -232,7 +241,7 @@ namespace Zametek.Utility.Logging
                 }
             }
 
-            return (returnParameterValue, anyParametersToLog);
+            return Tuple.Create(returnParameterValue, anyParametersToLog);
         }
 
         private static string GetSourceMessage(IInvocation invocation)
@@ -255,15 +264,6 @@ namespace Zametek.Utility.Logging
         public LogActive ActiveState
         {
             get;
-        }
-
-        public static implicit operator LogActive(DiagnosticLogState state)
-        {
-            if (state == null)
-            {
-                throw new ArgumentNullException(nameof(state));
-            }
-            return state.ActiveState;
         }
     }
 }
