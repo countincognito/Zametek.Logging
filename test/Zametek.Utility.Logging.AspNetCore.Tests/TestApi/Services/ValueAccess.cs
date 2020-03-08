@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Zametek.Utility.Logging.AspNetCore.TestApi
+namespace Zametek.Utility.Logging.AspNetCore.Tests
 {
     [DiagnosticLogging(LogActive.On)]
     public class ValueAccess
@@ -54,6 +54,8 @@ namespace Zametek.Utility.Logging.AspNetCore.TestApi
             m_Logger.Information($"{nameof(GetAsync)} Invoked");
 
             await Task.Delay(new Random().Next(100, 200)).ConfigureAwait(false);
+
+            m_Logger.Information($"{nameof(GetAsync)} Finished");
 
             return m_Cache.Values.ToList();
         }

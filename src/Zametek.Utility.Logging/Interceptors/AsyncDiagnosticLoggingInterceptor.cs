@@ -26,7 +26,9 @@ namespace Zametek.Utility.Logging
         {
         }
 
-        public AsyncDiagnosticLoggingInterceptor(ILogger logger, HashSet<string> filterTheseParameters)
+        public AsyncDiagnosticLoggingInterceptor(
+            ILogger logger,
+            HashSet<string> filterTheseParameters)
         {
             m_Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             m_FilterTheseParameters = filterTheseParameters ?? throw new ArgumentNullException(nameof(filterTheseParameters));
@@ -56,7 +58,10 @@ namespace Zametek.Utility.Logging
             return new DiagnosticLogState(methodActiveState);
         }
 
-        protected override void CompletedInvocation(IInvocation invocation, DiagnosticLogState activeState, object returnValue)
+        protected override void CompletedInvocation(
+            IInvocation invocation,
+            DiagnosticLogState activeState,
+            object returnValue)
         {
             if (invocation == null)
             {
@@ -71,7 +76,9 @@ namespace Zametek.Utility.Logging
             LogMethodAfterInvocation(invocation, classActiveState, returnValue);
         }
 
-        private LogActive LogMethodBeforeInvocation(IInvocation invocation, LogActive activeState)
+        private LogActive LogMethodBeforeInvocation(
+            IInvocation invocation,
+            LogActive activeState)
         {
             if (invocation == null)
             {
@@ -174,7 +181,10 @@ namespace Zametek.Utility.Logging
             return Tuple.Create(filteredParameters, anyParametersToLog);
         }
 
-        private void LogMethodAfterInvocation(IInvocation invocation, LogActive activeState, object returnValue)
+        private void LogMethodAfterInvocation(
+            IInvocation invocation,
+            LogActive activeState,
+            object returnValue)
         {
             if (invocation == null)
             {
@@ -202,7 +212,10 @@ namespace Zametek.Utility.Logging
             }
         }
 
-        private static Tuple<object, LogActive> FilterReturnValue(MethodInfo methodInfo, LogActive activeState, object returnValue)
+        private static Tuple<object, LogActive> FilterReturnValue(
+            MethodInfo methodInfo,
+            LogActive activeState,
+            object returnValue)
         {
             if (methodInfo == null)
             {

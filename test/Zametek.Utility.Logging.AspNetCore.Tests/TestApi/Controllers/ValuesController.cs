@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace Zametek.Utility.Logging.AspNetCore.TestApi
+namespace Zametek.Utility.Logging.AspNetCore.Tests
 {
     [Route("api/[controller]")]
     public class ValuesController

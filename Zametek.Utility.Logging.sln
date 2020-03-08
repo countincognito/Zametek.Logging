@@ -11,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6D165C1B-B
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zametek.Utility.Logging.AspNetCore", "src\Zametek.Utility.Logging.AspNetCore\Zametek.Utility.Logging.AspNetCore.csproj", "{76FB15F5-0C63-404B-AF17-0F4BADFA02D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zametek.Utility.Logging.Tests", "test\Zametek.Utility.Logging.Tests\Zametek.Utility.Logging.Tests.csproj", "{30D9E7AF-3B9D-419D-BDB7-99E8466B9FA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zametek.Utility.Logging.Tests", "test\Zametek.Utility.Logging.Tests\Zametek.Utility.Logging.Tests.csproj", "{30D9E7AF-3B9D-419D-BDB7-99E8466B9FA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zametek.Utility.Logging.AspNetCore.TestApi", "test\Zametek.Utility.Logging.AspNetCore.TestApi\Zametek.Utility.Logging.AspNetCore.TestApi.csproj", "{3839D9D9-7E36-419A-9FD4-35529B5AA652}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zametek.Utility.Logging.AspNetCore.TestApi", "test\Zametek.Utility.Logging.AspNetCore.TestApi\Zametek.Utility.Logging.AspNetCore.TestApi.csproj", "{3839D9D9-7E36-419A-9FD4-35529B5AA652}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zametek.Utility.Logging.AspNetCore.Tests", "test\Zametek.Utility.Logging.AspNetCore.Tests\Zametek.Utility.Logging.AspNetCore.Tests.csproj", "{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +39,10 @@ Global
 		{3839D9D9-7E36-419A-9FD4-35529B5AA652}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3839D9D9-7E36-419A-9FD4-35529B5AA652}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3839D9D9-7E36-419A-9FD4-35529B5AA652}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{76FB15F5-0C63-404B-AF17-0F4BADFA02D1} = {3EE92514-6DD9-4846-89B2-1EB67ED9D71C}
 		{30D9E7AF-3B9D-419D-BDB7-99E8466B9FA8} = {6D165C1B-BDB9-497C-91E4-D525DD22ECB7}
 		{3839D9D9-7E36-419A-9FD4-35529B5AA652} = {6D165C1B-BDB9-497C-91E4-D525DD22ECB7}
+		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF} = {6D165C1B-BDB9-497C-91E4-D525DD22ECB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E06EFBB6-AB85-4A63-9F09-2B89F704CA9A}

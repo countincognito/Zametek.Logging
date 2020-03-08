@@ -31,7 +31,9 @@ namespace Zametek.Utility.Logging
             }
         }
 
-        protected override void CompletedTiming(IInvocation invocation, Stopwatch state)
+        protected override void CompletedTiming(
+            IInvocation invocation,
+            Stopwatch state)
         {
             if (invocation == null)
             {

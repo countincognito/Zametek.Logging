@@ -10,6 +10,7 @@ namespace Zametek.Utility.Logging
         Error = 1 << 1,
         Performance = 1 << 2,
         Diagnostic = 1 << 3,
-        All = Tracking | Error | Performance | Diagnostic,
+        Invocation = 1 << 4,
+        All = Tracking | Error | Performance | Diagnostic | Invocation,
     }
 }

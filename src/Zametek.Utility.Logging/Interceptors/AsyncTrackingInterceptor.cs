@@ -7,7 +7,9 @@ namespace Zametek.Utility.Logging
     public class AsyncTrackingInterceptor
         : AsyncInterceptorBase
     {
-        protected override async Task InterceptAsync(IInvocation invocation, Func<IInvocation, Task> proceed)
+        protected override async Task InterceptAsync(
+            IInvocation invocation,
+            Func<IInvocation, Task> proceed)
         {
             if (invocation == null)
             {
@@ -22,7 +24,9 @@ namespace Zametek.Utility.Logging
             await proceed(invocation).ConfigureAwait(false);
         }
 
-        protected override async Task<T> InterceptAsync<T>(IInvocation invocation, Func<IInvocation, Task<T>> proceed)
+        protected override async Task<T> InterceptAsync<T>(
+            IInvocation invocation,
+            Func<IInvocation, Task<T>> proceed)
         {
             if (invocation == null)
             {

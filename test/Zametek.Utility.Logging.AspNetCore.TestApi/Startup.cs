@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Swashbuckle.AspNetCore.Swagger;
 using System.Collections.Generic;
 
 namespace Zametek.Utility.Logging.AspNetCore.TestApi
@@ -37,13 +36,10 @@ namespace Zametek.Utility.Logging.AspNetCore.TestApi
                 .CreateLogger();
             Log.Logger = serilog;
 
-            //LogProxy.FilterTheseParameters.Add("requestDto");
+            services.ActivateLogTypes(LogTypes.All);
 
-            // Wrapping a class in a LogProxy automatically enriches the serilog output.
-            var valueAccess = LogProxy.Create<IValueAccess>(new ValueAccess(serilog), serilog, LogType.All);
-
-            services.AddSingleton(valueAccess);
             services.AddSingleton(serilog);
+            services.TryAddSingletonWithLogProxy<IValueAccess, ValueAccess>();
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
@@ -65,8 +61,14 @@ namespace Zametek.Utility.Logging.AspNetCore.TestApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
             // Use this to add unique callchain IDs to each call into a controller, and add custom headers.
-            app.UseTrackingMiddleware(
+            app.UseTrackingContextMiddleware(
                 (context) => new Dictionary<string, string>()
                 {
                     { RemoteIpAddressName, context.Connection?.RemoteIpAddress?.ToString() },
@@ -76,12 +78,6 @@ namespace Zametek.Utility.Logging.AspNetCore.TestApi
                     { "Country of origin", "UK" },
                     { "Random string generated with each call", System.Guid.NewGuid().ToString() }
                 });
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
