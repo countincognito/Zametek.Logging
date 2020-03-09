@@ -1,4 +1,4 @@
-# Zametek.Utility.Logging
+# Zametek.Logging
 
 [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging "NuGet Version") **Zametek.Utility.Logging**
 
