@@ -4,8 +4,6 @@
 
 [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.AspNetCore.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging.AspNetCore "NuGet Version") **Zametek.Utility.Logging.AspNetCore**
 
-[![Gitter](https://badges.gitter.im/Zametek-Utility-Logging/Lobby.svg)](https://gitter.im/Zametek-Utility-Logging/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) **Chat**
-
 ## Overview
 
 **Zametek.Utility.Logging** is a simple DotNet utility framework designed to provide rich, contextual logging for classes that are used as injected dependencies.
