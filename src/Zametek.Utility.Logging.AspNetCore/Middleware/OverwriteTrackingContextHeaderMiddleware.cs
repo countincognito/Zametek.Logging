@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Zametek.Utility.Logging.AspNetCore
+namespace Zametek.Utility.Logging
 {
     /// <summary>
     /// Use this to overwrite any extra header values are in the current Tracking Context.

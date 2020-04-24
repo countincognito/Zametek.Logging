@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 
-namespace Zametek.Utility.Logging.AspNetCore
+namespace Zametek.Utility.Logging
 {
     public static class ApplicationBuilderExtensions
     {

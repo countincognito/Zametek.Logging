@@ -1,5 +1,4 @@
-﻿using Destructurama.Attributed;
-using System;
+﻿using System;
 
 namespace Zametek.Utility.Logging.AspNetCore.TestApi
 {
@@ -10,7 +9,7 @@ namespace Zametek.Utility.Logging.AspNetCore.TestApi
 
         public string Email { get; set; }
 
-        [NotLogged]
+        [NoLogging]
         public string Password { get; set; }
     }
 }

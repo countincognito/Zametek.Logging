@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 
-namespace Zametek.Utility.Logging.AspNetCore
+namespace Zametek.Utility.Logging
 {
     public static class TrackingContextHelper
     {

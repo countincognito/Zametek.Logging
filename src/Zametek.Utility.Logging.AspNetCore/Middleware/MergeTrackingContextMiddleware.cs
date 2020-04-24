@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Zametek.Utility.Logging.AspNetCore
+namespace Zametek.Utility.Logging
 {
     public class MergeTrackingContextMiddleware
     {

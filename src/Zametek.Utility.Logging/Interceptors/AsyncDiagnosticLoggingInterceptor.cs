@@ -161,8 +161,7 @@ namespace Zametek.Utility.Logging
 
                 // Check for DiagnosticLogging Parameter scope.
 
-                if (parameterInfo
-                    .GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) is DiagnosticLoggingAttribute parameterDiagnosticAttribute)
+                if (parameterInfo.GetCustomAttribute(typeof(DiagnosticLoggingAttribute), false) is DiagnosticLoggingAttribute parameterDiagnosticAttribute)
                 {
                     parameterActiveState = parameterDiagnosticAttribute.LogActive;
                 }

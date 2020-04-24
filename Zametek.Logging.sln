@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zametek.Utility.Logging.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zametek.Utility.Logging.AspNetCore.TestApi", "test\Zametek.Utility.Logging.AspNetCore.TestApi\Zametek.Utility.Logging.AspNetCore.TestApi.csproj", "{3839D9D9-7E36-419A-9FD4-35529B5AA652}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zametek.Utility.Logging.AspNetCore.Tests", "test\Zametek.Utility.Logging.AspNetCore.Tests\Zametek.Utility.Logging.AspNetCore.Tests.csproj", "{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zametek.Utility.Logging.AspNetCore.Tests", "test\Zametek.Utility.Logging.AspNetCore.Tests\Zametek.Utility.Logging.AspNetCore.Tests.csproj", "{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zametek.Utility.Logging.Primitives", "src\Zametek.Utility.Logging.Primitives\Zametek.Utility.Logging.Primitives.csproj", "{1E20296C-B189-4E0F-B276-039BC4826A3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E20296C-B189-4E0F-B276-039BC4826A3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E20296C-B189-4E0F-B276-039BC4826A3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E20296C-B189-4E0F-B276-039BC4826A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E20296C-B189-4E0F-B276-039BC4826A3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{30D9E7AF-3B9D-419D-BDB7-99E8466B9FA8} = {6D165C1B-BDB9-497C-91E4-D525DD22ECB7}
 		{3839D9D9-7E36-419A-9FD4-35529B5AA652} = {6D165C1B-BDB9-497C-91E4-D525DD22ECB7}
 		{34A4DCC3-3AC1-4C63-B014-59E176C2CBBF} = {6D165C1B-BDB9-497C-91E4-D525DD22ECB7}
+		{1E20296C-B189-4E0F-B276-039BC4826A3F} = {3EE92514-6DD9-4846-89B2-1EB67ED9D71C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E06EFBB6-AB85-4A63-9F09-2B89F704CA9A}

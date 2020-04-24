@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Zametek.Utility.Logging
 {
-    internal static class Utility
+    public static class TypeExtensions
     {
         public static bool IsInterface(this Type input)
         {

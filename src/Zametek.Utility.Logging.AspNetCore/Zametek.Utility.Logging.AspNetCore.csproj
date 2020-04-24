@@ -5,13 +5,13 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>Zametek utility logging classes for AspNet Core.</Description>
     <Copyright>Copyright (c) 2020 Riccardo M Bennett-Lovsey</Copyright>
-    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Logging</PackageProjectUrl>
-    <Version>1.0.0</Version>
+    <Version>1.0.2</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <Authors>countincognito</Authors>
     <Company>countincognito</Company>
+    <RootNamespace>Zametek.Utility.Logging</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +20,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Zametek.Utility.Logging" Version="1.0.0" />
+    <PackageReference Include="Zametek.Utility.Logging" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
