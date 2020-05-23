@@ -6,7 +6,7 @@
     <Description>Zametek utility logging classes for AspNet Core.</Description>
     <Copyright>Copyright (c) 2020 Riccardo M Bennett-Lovsey</Copyright>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Logging</PackageProjectUrl>
-    <Version>1.0.2</Version>
+    <Version>1.1.0</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <Authors>countincognito</Authors>
@@ -16,11 +16,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Zametek.Utility.Logging" Version="1.0.2" />
+    <PackageReference Include="Zametek.Utility.Logging" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
