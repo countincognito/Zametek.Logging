@@ -6,7 +6,7 @@
     <Description>Zametek utility logging classes.</Description>
     <Copyright>Copyright (c) 2022 Riccardo M Bennett-Lovsey</Copyright>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Logging</PackageProjectUrl>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Company>countincognito</Company>
     <NeutralLanguage>en-GB</NeutralLanguage>
@@ -24,7 +24,7 @@
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Zametek.Utility" Version="2.2.0" />
-    <PackageReference Include="Zametek.Utility.Logging.Primitives" Version="1.1.0" />
+    <PackageReference Include="Zametek.Utility.Logging.Primitives" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
