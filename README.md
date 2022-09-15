@@ -1,5 +1,7 @@
 # Zametek.Logging
 
+[![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.Primitives.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging.Primitives "NuGet Version") **Zametek.Utility.Logging**
+
 [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging "NuGet Version") **Zametek.Utility.Logging**
 
 [![NuGet Version](https://img.shields.io/nuget/v/Zametek.Utility.Logging.AspNetCore.svg)](https://www.nuget.org/packages/Zametek.Utility.Logging.AspNetCore "NuGet Version") **Zametek.Utility.Logging.AspNetCore**
