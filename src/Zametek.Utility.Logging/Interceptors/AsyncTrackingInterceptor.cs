@@ -9,36 +9,46 @@ namespace Zametek.Utility.Logging
     {
         protected override async Task InterceptAsync(
             IInvocation invocation,
-            Func<IInvocation, Task> proceed)
+            IInvocationProceedInfo proceedInfo,
+            Func<IInvocation, IInvocationProceedInfo, Task> proceed)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
-            if (proceed == null)
+            if (proceedInfo is null)
+            {
+                throw new ArgumentNullException(nameof(proceedInfo));
+            }
+            if (proceed is null)
             {
                 throw new ArgumentNullException(nameof(proceed));
             }
 
             TrackingContext.NewCurrentIfEmpty();
-            await proceed(invocation).ConfigureAwait(false);
+            await proceed(invocation, proceedInfo).ConfigureAwait(false);
         }
 
         protected override async Task<T> InterceptAsync<T>(
             IInvocation invocation,
-            Func<IInvocation, Task<T>> proceed)
+            IInvocationProceedInfo proceedInfo,
+            Func<IInvocation, IInvocationProceedInfo, Task<T>> proceed)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
-            if (proceed == null)
+            if (proceedInfo is null)
+            {
+                throw new ArgumentNullException(nameof(proceedInfo));
+            }
+            if (proceed is null)
             {
                 throw new ArgumentNullException(nameof(proceed));
             }
 
             TrackingContext.NewCurrentIfEmpty();
-            return await proceed(invocation).ConfigureAwait(false);
+            return await proceed(invocation, proceedInfo).ConfigureAwait(false);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Zametek.Utility.Logging
 
         protected override void StartingTiming(IInvocation invocation)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
@@ -35,11 +35,11 @@ namespace Zametek.Utility.Logging
             IInvocation invocation,
             Stopwatch state)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
-            if (state == null)
+            if (state is null)
             {
                 throw new ArgumentNullException(nameof(state));
             }
@@ -55,7 +55,7 @@ namespace Zametek.Utility.Logging
 
         private static string GetSourceMessage(IInvocation invocation)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }

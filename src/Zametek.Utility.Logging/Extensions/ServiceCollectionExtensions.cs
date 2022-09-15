@@ -38,15 +38,15 @@ namespace Zametek.Utility.Logging
             Type interfaceType,
             Type implementationType)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (interfaceType == null)
+            if (interfaceType is null)
             {
                 throw new ArgumentNullException(nameof(interfaceType));
             }
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -64,15 +64,15 @@ namespace Zametek.Utility.Logging
             Type interfaceType,
             Func<IServiceProvider, object> implementationFactory)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (interfaceType == null)
+            if (interfaceType is null)
             {
                 throw new ArgumentNullException(nameof(interfaceType));
             }
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -90,7 +90,7 @@ namespace Zametek.Utility.Logging
             where TService : class
             where TImplementation : class, TService
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -108,11 +108,11 @@ namespace Zametek.Utility.Logging
             where TImplementation : class, TService
         {
 
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -132,15 +132,15 @@ namespace Zametek.Utility.Logging
             Type interfaceType,
             Type implementationType)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (interfaceType == null)
+            if (interfaceType is null)
             {
                 throw new ArgumentNullException(nameof(interfaceType));
             }
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -158,15 +158,15 @@ namespace Zametek.Utility.Logging
             Type interfaceType,
             Func<IServiceProvider, object> implementationFactory)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (interfaceType == null)
+            if (interfaceType is null)
             {
                 throw new ArgumentNullException(nameof(interfaceType));
             }
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -184,7 +184,7 @@ namespace Zametek.Utility.Logging
             where TService : class
             where TImplementation : class, TService
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -202,11 +202,11 @@ namespace Zametek.Utility.Logging
             where TImplementation : class, TService
         {
 
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -226,15 +226,15 @@ namespace Zametek.Utility.Logging
             Type interfaceType,
             Type implementationType)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (interfaceType == null)
+            if (interfaceType is null)
             {
                 throw new ArgumentNullException(nameof(interfaceType));
             }
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -252,15 +252,15 @@ namespace Zametek.Utility.Logging
             Type interfaceType,
             Func<IServiceProvider, object> implementationFactory)
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (interfaceType == null)
+            if (interfaceType is null)
             {
                 throw new ArgumentNullException(nameof(interfaceType));
             }
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -278,7 +278,7 @@ namespace Zametek.Utility.Logging
             where TService : class
             where TImplementation : class, TService
         {
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
@@ -296,11 +296,11 @@ namespace Zametek.Utility.Logging
             where TImplementation : class, TService
         {
 
-            if (collection == null)
+            if (collection is null)
             {
                 throw new ArgumentNullException(nameof(collection));
             }
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -322,15 +322,15 @@ namespace Zametek.Utility.Logging
             Type interfaceType,
             Type implementationType)
         {
-            if (serviceProvider == null)
+            if (serviceProvider is null)
             {
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
-            if (interfaceType == null)
+            if (interfaceType is null)
             {
                 throw new ArgumentNullException(nameof(interfaceType));
             }
-            if (implementationType == null)
+            if (implementationType is null)
             {
                 throw new ArgumentNullException(nameof(implementationType));
             }
@@ -346,15 +346,15 @@ namespace Zametek.Utility.Logging
             Type interfaceType,
             Func<IServiceProvider, object> implementationFactory)
         {
-            if (serviceProvider == null)
+            if (serviceProvider is null)
             {
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
-            if (interfaceType == null)
+            if (interfaceType is null)
             {
                 throw new ArgumentNullException(nameof(interfaceType));
             }
-            if (implementationFactory == null)
+            if (implementationFactory is null)
             {
                 throw new ArgumentNullException(nameof(implementationFactory));
             }
@@ -370,7 +370,7 @@ namespace Zametek.Utility.Logging
             where TService : class
             where TImplementation : class, TService
         {
-            if (serviceProvider == null)
+            if (serviceProvider is null)
             {
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
@@ -387,7 +387,7 @@ namespace Zametek.Utility.Logging
             where TService : class
             where TImplementation : class, TService
         {
-            if (serviceProvider == null)
+            if (serviceProvider is null)
             {
                 throw new ArgumentNullException(nameof(serviceProvider));
             }

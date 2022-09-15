@@ -36,7 +36,7 @@ namespace Zametek.Utility.Logging
 
         protected override DiagnosticLogState StartingInvocation(IInvocation invocation)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
@@ -63,11 +63,11 @@ namespace Zametek.Utility.Logging
             DiagnosticLogState activeState,
             object returnValue)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
-            if (activeState == null)
+            if (activeState is null)
             {
                 throw new ArgumentNullException(nameof(activeState));
             }
@@ -80,7 +80,7 @@ namespace Zametek.Utility.Logging
             IInvocation invocation,
             LogActive activeState)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
@@ -122,15 +122,15 @@ namespace Zametek.Utility.Logging
             LogActive activeState,
             HashSet<string> filterTheseParameters)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
-            if (methodInfo == null)
+            if (methodInfo is null)
             {
                 throw new ArgumentNullException(nameof(methodInfo));
             }
-            if (filterTheseParameters == null)
+            if (filterTheseParameters is null)
             {
                 throw new ArgumentNullException(nameof(filterTheseParameters));
             }
@@ -185,7 +185,7 @@ namespace Zametek.Utility.Logging
             LogActive activeState,
             object returnValue)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
@@ -216,7 +216,7 @@ namespace Zametek.Utility.Logging
             LogActive activeState,
             object returnValue)
         {
-            if (methodInfo == null)
+            if (methodInfo is null)
             {
                 throw new ArgumentNullException(nameof(methodInfo));
             }
@@ -258,7 +258,7 @@ namespace Zametek.Utility.Logging
 
         private static string GetSourceMessage(IInvocation invocation)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }

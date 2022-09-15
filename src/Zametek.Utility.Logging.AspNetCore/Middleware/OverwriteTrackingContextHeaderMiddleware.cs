@@ -39,7 +39,7 @@ namespace Zametek.Utility.Logging
 
         public async Task Invoke(HttpContext httpContext)
         {
-            if (httpContext == null)
+            if (httpContext is null)
             {
                 throw new ArgumentNullException(nameof(httpContext));
             }
@@ -72,15 +72,15 @@ namespace Zametek.Utility.Logging
             IList<string> headerKeys,
             Func<HttpContext, string> headerValueGenerator)
         {
-            if (httpContext == null)
+            if (httpContext is null)
             {
                 throw new ArgumentNullException(nameof(httpContext));
             }
-            if (headerKeys == null)
+            if (headerKeys is null)
             {
                 throw new ArgumentNullException(nameof(headerKeys));
             }
-            if (headerValueGenerator == null)
+            if (headerValueGenerator is null)
             {
                 throw new ArgumentNullException(nameof(headerValueGenerator));
             }

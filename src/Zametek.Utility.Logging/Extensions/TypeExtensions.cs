@@ -7,7 +7,7 @@ namespace Zametek.Utility.Logging
     {
         public static bool IsInterface(this Type input)
         {
-            if (input == null)
+            if (input is null)
             {
                 throw new ArgumentNullException(nameof(input));
             }
@@ -25,7 +25,7 @@ namespace Zametek.Utility.Logging
 
         public static void ThrowIfNotInterface(this Type input)
         {
-            if (input == null)
+            if (input is null)
             {
                 throw new ArgumentNullException(nameof(input));
             }

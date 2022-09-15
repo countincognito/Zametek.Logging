@@ -42,11 +42,11 @@ namespace Zametek.Utility.Logging
             LogTypes logTypes = DefaultLogTypes,
             params IInterceptor[] extraInterceptors) where T : class
         {
-            if (instance == null)
+            if (instance is null)
             {
                 throw new ArgumentNullException(nameof(instance));
             }
-            if (logger == null)
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
@@ -69,11 +69,11 @@ namespace Zametek.Utility.Logging
             LogTypes logTypes = DefaultLogTypes,
             params IInterceptor[] extraInterceptors)
         {
-            if (instance == null)
+            if (instance is null)
             {
                 throw new ArgumentNullException(nameof(instance));
             }
-            if (logger == null)
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }
@@ -97,7 +97,7 @@ namespace Zametek.Utility.Logging
             ILogger logger,
             LogTypes logTypes)
         {
-            if (logger == null)
+            if (logger is null)
             {
                 throw new ArgumentNullException(nameof(logger));
             }

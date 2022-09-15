@@ -6,10 +6,10 @@
     <Description>Zametek utility logging primitives.</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Authors>countincognito</Authors>
-    <Copyright>Copyright (c) 2020 Riccardo M Bennett-Lovsey</Copyright>
+    <Copyright>Copyright (c) 2022 Riccardo M Bennett-Lovsey</Copyright>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Logging</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.0.2</Version>
+    <Version>1.1.0</Version>
     <Company>countincognito</Company>
     <NeutralLanguage>en-GB</NeutralLanguage>
   </PropertyGroup>
@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Destructurama.Attributed" Version="2.0.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+    <PackageReference Include="Destructurama.Attributed" Version="3.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

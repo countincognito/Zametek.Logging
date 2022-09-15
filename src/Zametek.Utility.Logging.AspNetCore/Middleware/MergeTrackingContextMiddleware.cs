@@ -28,7 +28,7 @@ namespace Zametek.Utility.Logging
 
         public async Task Invoke(HttpContext httpContext)
         {
-            if (httpContext == null)
+            if (httpContext is null)
             {
                 throw new ArgumentNullException(nameof(httpContext));
             }
@@ -56,7 +56,7 @@ namespace Zametek.Utility.Logging
 
         private static void MergeTrackingContextHeader(HttpContext httpContext)
         {
-            if (httpContext == null)
+            if (httpContext is null)
             {
                 throw new ArgumentNullException(nameof(httpContext));
             }

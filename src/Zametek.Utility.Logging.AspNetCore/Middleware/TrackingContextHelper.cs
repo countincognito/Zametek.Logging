@@ -27,7 +27,7 @@ namespace Zametek.Utility.Logging
         /// </summary>
         public static IHeaderDictionary ProcessHttpHeaders(IHeaderDictionary headers)
         {
-            if (headers == null)
+            if (headers is null)
             {
                 return headers;
             }
@@ -52,7 +52,7 @@ namespace Zametek.Utility.Logging
         /// </summary>
         public static HttpHeaders ProcessHttpHeaders(HttpHeaders headers)
         {
-            if (headers == null)
+            if (headers is null)
             {
                 return headers;
             }
@@ -77,7 +77,7 @@ namespace Zametek.Utility.Logging
 
         private static void CreateTrackingContextFromHeaderValues(IEnumerable<string> values)
         {
-            if (values == null)
+            if (values is null)
             {
                 throw new ArgumentNullException(nameof(values));
             }

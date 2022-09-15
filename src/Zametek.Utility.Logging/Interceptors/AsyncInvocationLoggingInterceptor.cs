@@ -19,13 +19,18 @@ namespace Zametek.Utility.Logging
 
         protected override async Task InterceptAsync(
             IInvocation invocation,
-            Func<IInvocation, Task> proceed)
+            IInvocationProceedInfo proceedInfo,
+            Func<IInvocation, IInvocationProceedInfo, Task> proceed)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
-            if (proceed == null)
+            if (proceedInfo is null)
+            {
+                throw new ArgumentNullException(nameof(proceedInfo));
+            }
+            if (proceed is null)
             {
                 throw new ArgumentNullException(nameof(proceed));
             }
@@ -36,7 +41,7 @@ namespace Zametek.Utility.Logging
                 m_Logger.Information($"{GetSourceMessage(invocation)} started");
             }
 
-            await proceed(invocation).ConfigureAwait(false);
+            await proceed(invocation, proceedInfo).ConfigureAwait(false);
 
             using (LogContext.PushProperty(LogTypesName, LogTypes.Invocation))
             using (LogContext.Push(new InvocationEnricher(invocation)))
@@ -45,15 +50,20 @@ namespace Zametek.Utility.Logging
             }
         }
 
-        protected override async Task<TResult> InterceptAsync<TResult>(
+        protected override async Task<T> InterceptAsync<T>(
             IInvocation invocation,
-            Func<IInvocation, Task<TResult>> proceed)
+            IInvocationProceedInfo proceedInfo,
+            Func<IInvocation, IInvocationProceedInfo, Task<T>> proceed)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }
-            if (proceed == null)
+            if (proceedInfo is null)
+            {
+                throw new ArgumentNullException(nameof(proceedInfo));
+            }
+            if (proceed is null)
             {
                 throw new ArgumentNullException(nameof(proceed));
             }
@@ -64,7 +74,7 @@ namespace Zametek.Utility.Logging
                 m_Logger.Information($"{GetSourceMessage(invocation)} started");
             }
 
-            var result = await proceed(invocation).ConfigureAwait(false);
+            var result = await proceed(invocation, proceedInfo).ConfigureAwait(false);
 
             using (LogContext.PushProperty(LogTypesName, LogTypes.Invocation))
             using (LogContext.Push(new InvocationEnricher(invocation)))
@@ -77,7 +87,7 @@ namespace Zametek.Utility.Logging
 
         private static string GetSourceMessage(IInvocation invocation)
         {
-            if (invocation == null)
+            if (invocation is null)
             {
                 throw new ArgumentNullException(nameof(invocation));
             }

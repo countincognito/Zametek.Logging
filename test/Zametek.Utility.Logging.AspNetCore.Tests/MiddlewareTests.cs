@@ -127,7 +127,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             TrackingContext tc = TrackingContext.DeSerialize(tcBase64.Base64StringToByteArray());
 
             tc.CallChainId.Should().NotBeEmpty();
-            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0, 0, 1));
             tc.ExtraHeaders.Count.Should().Be(3);
             tc.ExtraHeaders[StartupBase.TraceIdentifierName].Should().NotBeNullOrWhiteSpace();
             tc.ExtraHeaders[StartupBase.CountryOfOriginName].Should().Be(@"UK");
@@ -187,7 +187,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             TrackingContext tc = TrackingContext.DeSerialize(tcBase64.Base64StringToByteArray());
 
             tc.CallChainId.Should().NotBeEmpty();
-            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0, 0, 1));
             tc.ExtraHeaders.Count.Should().Be(4);
             tc.ExtraHeaders[headerKey].Should().Be(headerValue);
             tc.ExtraHeaders[StartupBase.TraceIdentifierName].Should().NotBeNullOrWhiteSpace();
@@ -235,7 +235,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             TrackingContext tc = TrackingContext.DeSerialize(tcBase64.Base64StringToByteArray());
 
             tc.CallChainId.Should().NotBeEmpty();
-            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0, 0, 1));
             tc.ExtraHeaders.Count.Should().Be(3);
             tc.ExtraHeaders[StartupBase.TraceIdentifierName].Should().NotBeNullOrWhiteSpace();
             tc.ExtraHeaders[StartupBase.CountryOfOriginName].Should().Be(@"France");
@@ -295,7 +295,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             TrackingContext tc = TrackingContext.DeSerialize(tcBase64.Base64StringToByteArray());
 
             tc.CallChainId.Should().NotBeEmpty();
-            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, 10000);
+            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0, 0, 1));
             tc.ExtraHeaders.Count.Should().Be(4);
             tc.ExtraHeaders[headerKey].Should().Be(headerValue);
             tc.ExtraHeaders[StartupBase.TraceIdentifierName].Should().NotBeNullOrWhiteSpace();

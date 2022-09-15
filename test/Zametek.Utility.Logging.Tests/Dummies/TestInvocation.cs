@@ -25,6 +25,11 @@ namespace Zametek.Utility.Logging.Tests
 
             public Type TargetType => typeof(TestTrackingService);
 
+            public IInvocationProceedInfo CaptureProceedInfo()
+            {
+                throw new NotImplementedException();
+            }
+
             public object GetArgumentValue(int index)
             {
                 throw new NotImplementedException();

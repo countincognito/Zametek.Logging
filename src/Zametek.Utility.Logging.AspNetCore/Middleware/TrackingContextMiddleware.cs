@@ -27,7 +27,7 @@ namespace Zametek.Utility.Logging
             RequestDelegate next,
             Func<IDictionary<string, string>> setupFunc)
         {
-            if (setupFunc == null)
+            if (setupFunc is null)
             {
                 throw new ArgumentNullException(nameof(setupFunc));
             }

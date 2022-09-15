@@ -9,7 +9,7 @@ namespace Zametek.Utility.Logging
     {
         public static LoggerConfiguration FromTrackingContext(this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
-            if (enrichmentConfiguration == null)
+            if (enrichmentConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
             }
@@ -20,7 +20,7 @@ namespace Zametek.Utility.Logging
 
         public static LoggerConfiguration FromLogProxy(this LoggerEnrichmentConfiguration enrichmentConfiguration)
         {
-            if (enrichmentConfiguration == null)
+            if (enrichmentConfiguration is null)
             {
                 throw new ArgumentNullException(nameof(enrichmentConfiguration));
             }
