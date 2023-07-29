@@ -15,10 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Attributes\DiagnosticLoggingAttribute.cs~RF2fd96f7.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Destructurama.Attributed" Version="3.1.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.3">
       <PrivateAssets>all</PrivateAssets>
