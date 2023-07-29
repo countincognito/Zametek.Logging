@@ -1,7 +1,4 @@
-﻿using Destructurama.Attributed;
-using Serilog.Core;
-using Serilog.Events;
-using System;
+﻿using System;
 
 namespace Zametek.Utility.Logging
 {

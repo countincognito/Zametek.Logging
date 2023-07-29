@@ -6,25 +6,25 @@
     <Description>Zametek utility logging classes.</Description>
     <Copyright>Copyright (c) 2023 Riccardo M Bennett-Lovsey</Copyright>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Logging</PackageProjectUrl>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Company>countincognito</Company>
+	  <Company />
     <NeutralLanguage>en-GB</NeutralLanguage>
     <Authors>countincognito</Authors>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Castle.Core.AsyncInterceptor" Version="2.1.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
-    <PackageReference Include="Zametek.Utility" Version="2.2.0" />
-    <PackageReference Include="Zametek.Utility.Logging.Primitives" Version="1.2.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Zametek.Utility" Version="3.0.0" />
+    <PackageReference Include="Zametek.Utility.Logging.Primitives" Version="1.2.1" />
   </ItemGroup>
 
   <ItemGroup>

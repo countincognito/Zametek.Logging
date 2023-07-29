@@ -2,16 +2,13 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
-using Microsoft.Extensions.DependencyInjection;
-using Destructurama;
-using System.IO;
 
 namespace Zametek.Utility.Logging.AspNetCore.Tests
 {
@@ -48,7 +45,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            callChainIds.Count().Should().Be(10);
+            callChainIds.Count.Should().Be(10);
 
             //callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).Should().BeTrue();
         }
@@ -93,7 +90,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            callChainIds.Count().Should().Be(10);
+            callChainIds.Count.Should().Be(10);
 
             // The call chain ID should be different on the server side.
             callChainIds.All(x => !x.Equals(currentContext.CallChainId.ToDashedString())).Should().BeTrue();
@@ -140,7 +137,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            callChainIds.Count().Should().Be(10);
+            callChainIds.Count.Should().Be(10);
 
             callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).Should().BeTrue();
         }
@@ -202,7 +199,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            callChainIds.Count().Should().Be(10);
+            callChainIds.Count.Should().Be(10);
 
             callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).Should().BeTrue();
         }
@@ -248,7 +245,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            countriesOfOrigin.Count().Should().Be(10);
+            countriesOfOrigin.Count.Should().Be(10);
 
             countriesOfOrigin.All(x => x.Equals(tc.ExtraHeaders[StartupBase.CountryOfOriginName])).Should().BeTrue();
         }
@@ -310,7 +307,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            countriesOfOrigin.Count().Should().Be(10);
+            countriesOfOrigin.Count.Should().Be(10);
 
             countriesOfOrigin.All(x => x.Equals(tc.ExtraHeaders[StartupBase.CountryOfOriginName])).Should().BeTrue();
         }

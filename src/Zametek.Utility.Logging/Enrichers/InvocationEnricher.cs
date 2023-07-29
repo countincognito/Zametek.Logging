@@ -28,7 +28,9 @@ namespace Zametek.Utility.Logging
         /// </summary>
         /// <param name="logEvent">The log event to enrich.</param>
         /// <param name="propertyFactory">Factory for creating new properties to add to the event.</param>
-        public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
+        public void Enrich(
+            LogEvent logEvent,
+            ILogEventPropertyFactory propertyFactory)
         {
             if (logEvent is null)
             {
@@ -38,9 +40,18 @@ namespace Zametek.Utility.Logging
             Debug.Assert(m_Invocation.TargetType != null);
             Debug.Assert(m_Invocation.Method != null);
 
-            logEvent.AddPropertyIfAbsent(new LogEventProperty(NamespacePropertyName, new ScalarValue(m_Invocation.TargetType?.Namespace)));
-            logEvent.AddPropertyIfAbsent(new LogEventProperty(TypePropertyName, new ScalarValue(m_Invocation.TargetType?.Name)));
-            logEvent.AddPropertyIfAbsent(new LogEventProperty(MethodPropertyName, new ScalarValue(m_Invocation.Method?.Name)));
+            logEvent.AddPropertyIfAbsent(
+                new LogEventProperty(
+                    NamespacePropertyName,
+                    new ScalarValue(m_Invocation.TargetType?.Namespace)));
+            logEvent.AddPropertyIfAbsent(
+                new LogEventProperty(
+                    TypePropertyName,
+                    new ScalarValue(m_Invocation.TargetType?.Name)));
+            logEvent.AddPropertyIfAbsent(
+                new LogEventProperty(
+                    MethodPropertyName,
+                    new ScalarValue(m_Invocation.Method?.Name)));
         }
     }
 }

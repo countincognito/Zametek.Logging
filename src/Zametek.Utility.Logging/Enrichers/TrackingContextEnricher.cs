@@ -31,12 +31,21 @@ namespace Zametek.Utility.Logging
             TrackingContext context = TrackingContext.Current;
             if (context != null)
             {
-                logEvent.AddPropertyIfAbsent(new LogEventProperty(CallChainIdPropertyName, new ScalarValue(context.CallChainId.ToString())));
-                logEvent.AddPropertyIfAbsent(new LogEventProperty(OriginatorUtcTimestampPropertyName, new ScalarValue(context.OriginatorUtcTimestamp.ToString("o", CultureInfo.InvariantCulture))));
+                logEvent.AddPropertyIfAbsent(
+                    new LogEventProperty(
+                        CallChainIdPropertyName,
+                        new ScalarValue(context.CallChainId.ToString())));
+                logEvent.AddPropertyIfAbsent(
+                    new LogEventProperty(
+                        OriginatorUtcTimestampPropertyName,
+                        new ScalarValue(context.OriginatorUtcTimestamp.ToString("o", CultureInfo.InvariantCulture))));
 
                 foreach (KeyValuePair<string, string> kvp in context.ExtraHeaders.OrderBy(x => x.Key, StringComparer.Ordinal))
                 {
-                    logEvent.AddPropertyIfAbsent(new LogEventProperty(kvp.Key, new ScalarValue(kvp.Value)));
+                    logEvent.AddPropertyIfAbsent(
+                        new LogEventProperty(
+                            kvp.Key,
+                            new ScalarValue(kvp.Value)));
                 }
             }
         }
