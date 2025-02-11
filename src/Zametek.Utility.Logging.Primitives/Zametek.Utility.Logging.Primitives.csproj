@@ -1,22 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>Zametek.Utility.Logging</RootNamespace>
     <Description>Zametek utility logging primitives.</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <Authors>countincognito</Authors>
-    <Copyright>Copyright (c) 2023 Riccardo M Bennett-Lovsey</Copyright>
+    <Copyright>Copyright (c) 2025 Riccardo M Bennett-Lovsey</Copyright>
     <PackageProjectUrl>https://github.com/countincognito/Zametek.Logging</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.2.1</Version>
+    <Version>1.3.0-alpha</Version>
 	<Company />
     <NeutralLanguage>en-GB</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Destructurama.Attributed" Version="3.1.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="7.0.3">
+    <PackageReference Include="Destructurama.Attributed" Version="5.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

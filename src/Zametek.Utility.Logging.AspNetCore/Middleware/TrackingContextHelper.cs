@@ -40,7 +40,7 @@ namespace Zametek.Utility.Logging
             else
             {
                 // Create a new Tracking Context and copy it to the message header.
-                headers.Add(TrackingContextKeyName, CreateAndSerializeNewTrackingContext());
+                headers.Append(TrackingContextKeyName, CreateAndSerializeNewTrackingContext());
             }
 
             return headers;
