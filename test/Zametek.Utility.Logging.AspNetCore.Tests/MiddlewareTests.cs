@@ -1,7 +1,7 @@
-using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,22 +32,22 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             var host = await hostBuilder.StartAsync();
             var client = host.GetTestClient();
 
-            TrackingContext.Current.Should().BeNull();
+            TrackingContext.Current.ShouldBeNull();
 
             var response = await client.GetAsync(@"/api/values");
             response.EnsureSuccessStatusCode();
-            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).Should().BeFalse();
+            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).ShouldBeFalse();
 
-            TrackingContext.Current.Should().BeNull();
+            TrackingContext.Current.ShouldBeNull();
 
-            IList<string> callChainIds = textWriterSink
+            List<string> callChainIds = textWriterSink
                 .ToString()
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            callChainIds.Count.Should().Be(10);
+            callChainIds.Count.ShouldBe(10);
 
-            //callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).Should().BeTrue();
+            //callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).ShouldBeTrue();
         }
 
         [Fact]
@@ -70,7 +70,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
 
             TrackingContext.NewCurrentIfEmpty();
             TrackingContext currentContext = TrackingContext.Current;
-            currentContext.Should().NotBeNull();
+            currentContext.ShouldNotBeNull();
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, @"/api/values");
 
@@ -80,20 +80,20 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             var response = await client.SendAsync(requestMessage);
 
             response.EnsureSuccessStatusCode();
-            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).Should().BeFalse();
+            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).ShouldBeFalse();
 
-            TrackingContext.Current.Should().NotBeNull();
-            TrackingContext.Current.Should().BeEquivalentTo(currentContext);
+            TrackingContext.Current.ShouldNotBeNull();
+            TrackingContext.Current.ShouldBeEquivalentTo(currentContext);
 
-            IList<string> callChainIds = textWriterSink
+            List<string> callChainIds = textWriterSink
                 .ToString()
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            callChainIds.Count.Should().Be(10);
+            callChainIds.Count.ShouldBe(10);
 
             // The call chain ID should be different on the server side.
-            callChainIds.All(x => !x.Equals(currentContext.CallChainId.ToDashedString())).Should().BeTrue();
+            callChainIds.All(x => !x.Equals(currentContext.CallChainId.ToDashedString())).ShouldBeTrue();
         }
 
         [Fact]
@@ -114,32 +114,32 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             var host = await hostBuilder.StartAsync();
             var client = host.GetTestClient();
 
-            TrackingContext.Current.Should().BeNull();
+            TrackingContext.Current.ShouldBeNull();
 
             var response = await client.GetAsync(@"/api/values");
             response.EnsureSuccessStatusCode();
-            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).Should().BeTrue();
+            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).ShouldBeTrue();
 
             string tcBase64 = values.First();
             TrackingContext tc = TrackingContext.DeSerialize(tcBase64.Base64StringToByteArray());
 
-            tc.CallChainId.Should().NotBeEmpty();
-            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0, 0, 1));
-            tc.ExtraHeaders.Count.Should().Be(3);
-            tc.ExtraHeaders[StartupBase.TraceIdentifierName].Should().NotBeNullOrWhiteSpace();
-            tc.ExtraHeaders[StartupBase.CountryOfOriginName].Should().Be(@"UK");
-            tc.ExtraHeaders[StartupBase.RandomStringGeneratedWitEachCallName].Should().NotBeNullOrWhiteSpace();
+            tc.CallChainId.ShouldNotBe(Guid.Empty);
+            tc.OriginatorUtcTimestamp.ShouldBe(DateTime.UtcNow, new TimeSpan(0, 0, 1));
+            tc.ExtraHeaders.Count.ShouldBe(3);
+            tc.ExtraHeaders[StartupBase.TraceIdentifierName].ShouldNotBeNullOrWhiteSpace();
+            tc.ExtraHeaders[StartupBase.CountryOfOriginName].ShouldBe(@"UK");
+            tc.ExtraHeaders[StartupBase.RandomStringGeneratedWitEachCallName].ShouldNotBeNullOrWhiteSpace();
 
-            TrackingContext.Current.Should().BeNull();
+            TrackingContext.Current.ShouldBeNull();
 
-            IList<string> callChainIds = textWriterSink
+            List<string> callChainIds = textWriterSink
                 .ToString()
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            callChainIds.Count.Should().Be(10);
+            callChainIds.Count.ShouldBe(10);
 
-            callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).Should().BeTrue();
+            callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).ShouldBeTrue();
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
                 { StartupBase.CountryOfOriginName, @"Germany" }
             });
             TrackingContext currentContext = TrackingContext.Current;
-            currentContext.Should().NotBeNull();
+            currentContext.ShouldNotBeNull();
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, @"/api/values");
 
@@ -178,30 +178,30 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             var response = await client.SendAsync(requestMessage);
 
             response.EnsureSuccessStatusCode();
-            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).Should().BeTrue();
+            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).ShouldBeTrue();
 
             string tcBase64 = values.First();
             TrackingContext tc = TrackingContext.DeSerialize(tcBase64.Base64StringToByteArray());
 
-            tc.CallChainId.Should().NotBeEmpty();
-            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0, 0, 1));
-            tc.ExtraHeaders.Count.Should().Be(4);
-            tc.ExtraHeaders[headerKey].Should().Be(headerValue);
-            tc.ExtraHeaders[StartupBase.TraceIdentifierName].Should().NotBeNullOrWhiteSpace();
-            tc.ExtraHeaders[StartupBase.CountryOfOriginName].Should().Be(@"Germany");
-            tc.ExtraHeaders[StartupBase.RandomStringGeneratedWitEachCallName].Should().NotBeNullOrWhiteSpace();
+            tc.CallChainId.ShouldNotBe(Guid.Empty);
+            tc.OriginatorUtcTimestamp.ShouldBe(DateTime.UtcNow, new TimeSpan(0, 0, 1));
+            tc.ExtraHeaders.Count.ShouldBe(4);
+            tc.ExtraHeaders[headerKey].ShouldBe(headerValue);
+            tc.ExtraHeaders[StartupBase.TraceIdentifierName].ShouldNotBeNullOrWhiteSpace();
+            tc.ExtraHeaders[StartupBase.CountryOfOriginName].ShouldBe(@"Germany");
+            tc.ExtraHeaders[StartupBase.RandomStringGeneratedWitEachCallName].ShouldNotBeNullOrWhiteSpace();
 
-            TrackingContext.Current.Should().NotBeNull();
-            TrackingContext.Current.Should().BeEquivalentTo(currentContext);
+            TrackingContext.Current.ShouldNotBeNull();
+            TrackingContext.Current.ShouldBeEquivalentTo(currentContext);
 
-            IList<string> callChainIds = textWriterSink
+            List<string> callChainIds = textWriterSink
                 .ToString()
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            callChainIds.Count.Should().Be(10);
+            callChainIds.Count.ShouldBe(10);
 
-            callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).Should().BeTrue();
+            callChainIds.All(x => x.Equals(tc.CallChainId.ToDashedString())).ShouldBeTrue();
         }
 
         [Fact]
@@ -222,32 +222,32 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             var host = await hostBuilder.StartAsync();
             var client = host.GetTestClient();
 
-            TrackingContext.Current.Should().BeNull();
+            TrackingContext.Current.ShouldBeNull();
 
             var response = await client.GetAsync(@"/api/values");
             response.EnsureSuccessStatusCode();
-            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).Should().BeTrue();
+            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).ShouldBeTrue();
 
             string tcBase64 = values.First();
             TrackingContext tc = TrackingContext.DeSerialize(tcBase64.Base64StringToByteArray());
 
-            tc.CallChainId.Should().NotBeEmpty();
-            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0, 0, 1));
-            tc.ExtraHeaders.Count.Should().Be(3);
-            tc.ExtraHeaders[StartupBase.TraceIdentifierName].Should().NotBeNullOrWhiteSpace();
-            tc.ExtraHeaders[StartupBase.CountryOfOriginName].Should().Be(@"France");
-            tc.ExtraHeaders[StartupBase.RandomStringGeneratedWitEachCallName].Should().NotBeNullOrWhiteSpace();
+            tc.CallChainId.ShouldNotBe(Guid.Empty);
+            tc.OriginatorUtcTimestamp.ShouldBe(DateTime.UtcNow, new TimeSpan(0, 0, 1));
+            tc.ExtraHeaders.Count.ShouldBe(3);
+            tc.ExtraHeaders[StartupBase.TraceIdentifierName].ShouldNotBeNullOrWhiteSpace();
+            tc.ExtraHeaders[StartupBase.CountryOfOriginName].ShouldBe(@"France");
+            tc.ExtraHeaders[StartupBase.RandomStringGeneratedWitEachCallName].ShouldNotBeNullOrWhiteSpace();
 
-            TrackingContext.Current.Should().BeNull();
+            TrackingContext.Current.ShouldBeNull();
 
-            IList<string> countriesOfOrigin = textWriterSink
+            List<string> countriesOfOrigin = textWriterSink
                 .ToString()
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            countriesOfOrigin.Count.Should().Be(10);
+            countriesOfOrigin.Count.ShouldBe(10);
 
-            countriesOfOrigin.All(x => x.Equals(tc.ExtraHeaders[StartupBase.CountryOfOriginName])).Should().BeTrue();
+            countriesOfOrigin.All(x => x.Equals(tc.ExtraHeaders[StartupBase.CountryOfOriginName])).ShouldBeTrue();
         }
 
         [Fact]
@@ -276,7 +276,7 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
                 { StartupBase.CountryOfOriginName, @"Germany" }
             });
             TrackingContext currentContext = TrackingContext.Current;
-            currentContext.Should().NotBeNull();
+            currentContext.ShouldNotBeNull();
 
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, @"/api/values");
 
@@ -286,30 +286,30 @@ namespace Zametek.Utility.Logging.AspNetCore.Tests
             var response = await client.SendAsync(requestMessage);
 
             response.EnsureSuccessStatusCode();
-            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).Should().BeTrue();
+            response.Headers.TryGetValues(TrackingContextHelper.TrackingContextKeyName, out IEnumerable<string> values).ShouldBeTrue();
 
             string tcBase64 = values.First();
             TrackingContext tc = TrackingContext.DeSerialize(tcBase64.Base64StringToByteArray());
 
-            tc.CallChainId.Should().NotBeEmpty();
-            tc.OriginatorUtcTimestamp.Should().BeCloseTo(DateTime.UtcNow, new TimeSpan(0, 0, 1));
-            tc.ExtraHeaders.Count.Should().Be(4);
-            tc.ExtraHeaders[headerKey].Should().Be(headerValue);
-            tc.ExtraHeaders[StartupBase.TraceIdentifierName].Should().NotBeNullOrWhiteSpace();
-            tc.ExtraHeaders[StartupBase.CountryOfOriginName].Should().Be(@"France");
-            tc.ExtraHeaders[StartupBase.RandomStringGeneratedWitEachCallName].Should().NotBeNullOrWhiteSpace();
+            tc.CallChainId.ShouldNotBe(Guid.Empty);
+            tc.OriginatorUtcTimestamp.ShouldBe(DateTime.UtcNow, new TimeSpan(0, 0, 1));
+            tc.ExtraHeaders.Count.ShouldBe(4);
+            tc.ExtraHeaders[headerKey].ShouldBe(headerValue);
+            tc.ExtraHeaders[StartupBase.TraceIdentifierName].ShouldNotBeNullOrWhiteSpace();
+            tc.ExtraHeaders[StartupBase.CountryOfOriginName].ShouldBe(@"France");
+            tc.ExtraHeaders[StartupBase.RandomStringGeneratedWitEachCallName].ShouldNotBeNullOrWhiteSpace();
 
-            TrackingContext.Current.Should().NotBeNull();
-            TrackingContext.Current.Should().BeEquivalentTo(currentContext);
+            TrackingContext.Current.ShouldNotBeNull();
+            TrackingContext.Current.ShouldBeEquivalentTo(currentContext);
 
-            IList<string> countriesOfOrigin = textWriterSink
+            List<string> countriesOfOrigin = textWriterSink
                 .ToString()
                 .Split(textWriterSink.NewLine, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
 
-            countriesOfOrigin.Count.Should().Be(10);
+            countriesOfOrigin.Count.ShouldBe(10);
 
-            countriesOfOrigin.All(x => x.Equals(tc.ExtraHeaders[StartupBase.CountryOfOriginName])).Should().BeTrue();
+            countriesOfOrigin.All(x => x.Equals(tc.ExtraHeaders[StartupBase.CountryOfOriginName])).ShouldBeTrue();
         }
     }
 }

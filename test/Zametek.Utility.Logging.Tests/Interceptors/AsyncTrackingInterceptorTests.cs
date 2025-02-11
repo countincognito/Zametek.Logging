@@ -1,5 +1,5 @@
 ﻿using Castle.DynamicProxy;
-using FluentAssertions;
+using Shouldly;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -17,7 +17,7 @@ namespace Zametek.Utility.Logging.Tests
 
             ITestTrackingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestTrackingService>(instance, interceptor.ToInterceptor());
 
-            TrackingContext.Current.Should().BeNull();
+            TrackingContext.Current.ShouldBeNull();
 
             TrackingContext returnedTrackingContext = null;
             await proxy.ReturnAsync(() =>
@@ -25,8 +25,8 @@ namespace Zametek.Utility.Logging.Tests
                 returnedTrackingContext = TrackingContext.Current;
             });
 
-            returnedTrackingContext.Should().NotBeNull();
-            TrackingContext.Current.Should().BeNull();
+            returnedTrackingContext.ShouldNotBeNull();
+            TrackingContext.Current.ShouldBeNull();
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace Zametek.Utility.Logging.Tests
             TrackingContext.NewCurrent();
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            currentTrackingContext.Should().NotBeNull();
+            currentTrackingContext.ShouldNotBeNull();
 
             TrackingContext returnedTrackingContext = null;
             await proxy.ReturnAsync(() =>
@@ -48,13 +48,13 @@ namespace Zametek.Utility.Logging.Tests
                 returnedTrackingContext = TrackingContext.Current;
             });
 
-            TrackingContext.Current.Should().NotBeNull();
-            TrackingContext.Current.CallChainId.Should().Be(currentTrackingContext.CallChainId);
-            TrackingContext.Current.OriginatorUtcTimestamp.Should().Be(currentTrackingContext.OriginatorUtcTimestamp);
+            TrackingContext.Current.ShouldNotBeNull();
+            TrackingContext.Current.CallChainId.ShouldBe(currentTrackingContext.CallChainId);
+            TrackingContext.Current.OriginatorUtcTimestamp.ShouldBe(currentTrackingContext.OriginatorUtcTimestamp);
 
-            returnedTrackingContext.Should().NotBeNull();
-            returnedTrackingContext.CallChainId.Should().Be(currentTrackingContext.CallChainId);
-            returnedTrackingContext.OriginatorUtcTimestamp.Should().Be(currentTrackingContext.OriginatorUtcTimestamp);
+            returnedTrackingContext.ShouldNotBeNull();
+            returnedTrackingContext.CallChainId.ShouldBe(currentTrackingContext.CallChainId);
+            returnedTrackingContext.OriginatorUtcTimestamp.ShouldBe(currentTrackingContext.OriginatorUtcTimestamp);
         }
 
         [Fact]
@@ -65,12 +65,12 @@ namespace Zametek.Utility.Logging.Tests
 
             ITestTrackingService proxy = s_ProxyGenerator.CreateInterfaceProxyWithTargetInterface<ITestTrackingService>(instance, interceptor.ToInterceptor());
 
-            TrackingContext.Current.Should().BeNull();
+            TrackingContext.Current.ShouldBeNull();
 
             TrackingContext returnedTrackingContext = await proxy.ReturnTrackingContextAsync();
 
-            returnedTrackingContext.Should().NotBeNull();
-            TrackingContext.Current.Should().BeNull();
+            returnedTrackingContext.ShouldNotBeNull();
+            TrackingContext.Current.ShouldBeNull();
         }
 
         [Fact]
@@ -84,17 +84,17 @@ namespace Zametek.Utility.Logging.Tests
             TrackingContext.NewCurrent();
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            currentTrackingContext.Should().NotBeNull();
+            currentTrackingContext.ShouldNotBeNull();
 
             TrackingContext returnedTrackingContext = await proxy.ReturnTrackingContextAsync();
 
-            TrackingContext.Current.Should().NotBeNull();
-            TrackingContext.Current.CallChainId.Should().Be(currentTrackingContext.CallChainId);
-            TrackingContext.Current.OriginatorUtcTimestamp.Should().Be(currentTrackingContext.OriginatorUtcTimestamp);
+            TrackingContext.Current.ShouldNotBeNull();
+            TrackingContext.Current.CallChainId.ShouldBe(currentTrackingContext.CallChainId);
+            TrackingContext.Current.OriginatorUtcTimestamp.ShouldBe(currentTrackingContext.OriginatorUtcTimestamp);
 
-            returnedTrackingContext.Should().NotBeNull();
-            returnedTrackingContext.CallChainId.Should().Be(currentTrackingContext.CallChainId);
-            returnedTrackingContext.OriginatorUtcTimestamp.Should().Be(currentTrackingContext.OriginatorUtcTimestamp);
+            returnedTrackingContext.ShouldNotBeNull();
+            returnedTrackingContext.CallChainId.ShouldBe(currentTrackingContext.CallChainId);
+            returnedTrackingContext.OriginatorUtcTimestamp.ShouldBe(currentTrackingContext.OriginatorUtcTimestamp);
         }
     }
 }

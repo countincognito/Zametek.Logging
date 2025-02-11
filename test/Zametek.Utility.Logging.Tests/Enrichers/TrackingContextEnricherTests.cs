@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using Serilog.Events;
+﻿using Serilog.Events;
 using Serilog.Parsing;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -14,14 +14,14 @@ namespace Zametek.Utility.Logging.Tests
         {
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            currentTrackingContext.Should().BeNull();
+            currentTrackingContext.ShouldBeNull();
 
             var trackingContextEnricher = new TrackingContextEnricher();
             var logEvent = new LogEvent(DateTimeOffset.UtcNow, LogEventLevel.Information, null, new MessageTemplate(new List<MessageTemplateToken>()), new List<LogEventProperty>());
 
             trackingContextEnricher.Enrich(logEvent, null);
 
-            logEvent.Properties.Should().BeEmpty();
+            logEvent.Properties.ShouldBeEmpty();
         }
 
         [Fact]
@@ -30,16 +30,16 @@ namespace Zametek.Utility.Logging.Tests
             TrackingContext.NewCurrent();
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            currentTrackingContext.Should().NotBeNull();
+            currentTrackingContext.ShouldNotBeNull();
 
             var trackingContextEnricher = new TrackingContextEnricher();
             var logEvent = new LogEvent(DateTimeOffset.UtcNow, LogEventLevel.Information, null, new MessageTemplate(new List<MessageTemplateToken>()), new List<LogEventProperty>());
 
             trackingContextEnricher.Enrich(logEvent, null);
 
-            logEvent.Properties.Count.Should().Be(2);
-            logEvent.Properties[TrackingContextEnricher.CallChainIdPropertyName].ToString().Should().Be($"\"{currentTrackingContext.CallChainId}\"");
-            logEvent.Properties[TrackingContextEnricher.OriginatorUtcTimestampPropertyName].ToString().Should().Be($"\"{currentTrackingContext.OriginatorUtcTimestamp.ToString("o")}\"");
+            logEvent.Properties.Count.ShouldBe(2);
+            logEvent.Properties[TrackingContextEnricher.CallChainIdPropertyName].ToString().ShouldBe($"\"{currentTrackingContext.CallChainId}\"");
+            logEvent.Properties[TrackingContextEnricher.OriginatorUtcTimestampPropertyName].ToString().ShouldBe($"\"{currentTrackingContext.OriginatorUtcTimestamp.ToString("o")}\"");
         }
 
         [Fact]
@@ -53,18 +53,18 @@ namespace Zametek.Utility.Logging.Tests
             TrackingContext.NewCurrent(extraHeaders);
             TrackingContext currentTrackingContext = TrackingContext.Current;
 
-            currentTrackingContext.Should().NotBeNull();
+            currentTrackingContext.ShouldNotBeNull();
 
             var trackingContextEnricher = new TrackingContextEnricher();
             var logEvent = new LogEvent(DateTimeOffset.UtcNow, LogEventLevel.Information, null, new MessageTemplate(new List<MessageTemplateToken>()), new List<LogEventProperty>());
 
             trackingContextEnricher.Enrich(logEvent, null);
 
-            logEvent.Properties.Count.Should().Be(4);
-            logEvent.Properties[TrackingContextEnricher.CallChainIdPropertyName].ToString().Should().Be($@"""{currentTrackingContext.CallChainId}""");
-            logEvent.Properties[TrackingContextEnricher.OriginatorUtcTimestampPropertyName].ToString().Should().Be($@"""{currentTrackingContext.OriginatorUtcTimestamp.ToString("o")}""");
-            logEvent.Properties["FirstKey"].ToString().Should().Be(@"""FirstValue""");
-            logEvent.Properties["SecondKey"].ToString().Should().Be(@"""SecondValue""");
+            logEvent.Properties.Count.ShouldBe(4);
+            logEvent.Properties[TrackingContextEnricher.CallChainIdPropertyName].ToString().ShouldBe($@"""{currentTrackingContext.CallChainId}""");
+            logEvent.Properties[TrackingContextEnricher.OriginatorUtcTimestampPropertyName].ToString().ShouldBe($@"""{currentTrackingContext.OriginatorUtcTimestamp.ToString("o")}""");
+            logEvent.Properties["FirstKey"].ToString().ShouldBe(@"""FirstValue""");
+            logEvent.Properties["SecondKey"].ToString().ShouldBe(@"""SecondValue""");
         }
     }
 }

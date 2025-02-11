@@ -1,6 +1,6 @@
-﻿using FluentAssertions;
-using Serilog.Events;
+﻿using Serilog.Events;
 using Serilog.Parsing;
+using Shouldly;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -18,10 +18,10 @@ namespace Zametek.Utility.Logging.Tests
 
             invocationEnricher.Enrich(logEvent, null);
 
-            logEvent.Properties.Count.Should().Be(3);
-            logEvent.Properties[InvocationEnricher.NamespacePropertyName].ToString().Should().Be($@"""{invocation.TargetType.Namespace}""");
-            logEvent.Properties[InvocationEnricher.TypePropertyName].ToString().Should().Be($@"""{invocation.TargetType.Name}""");
-            logEvent.Properties[InvocationEnricher.MethodPropertyName].ToString().Should().Be($@"""{invocation.Method.Name}""");
+            logEvent.Properties.Count.ShouldBe(3);
+            logEvent.Properties[InvocationEnricher.NamespacePropertyName].ToString().ShouldBe($@"""{invocation.TargetType.Namespace}""");
+            logEvent.Properties[InvocationEnricher.TypePropertyName].ToString().ShouldBe($@"""{invocation.TargetType.Name}""");
+            logEvent.Properties[InvocationEnricher.MethodPropertyName].ToString().ShouldBe($@"""{invocation.Method.Name}""");
         }
     }
 }

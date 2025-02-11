@@ -1,6 +1,6 @@
 ﻿using Castle.DynamicProxy;
-using FluentAssertions;
 using Serilog;
+using Shouldly;
 using System.Collections.Generic;
 using System.IO;
 using Xunit;
@@ -44,8 +44,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.NoParamsReturnVoid();
 
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -58,8 +58,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.SomeParamsReturnVoid(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -72,9 +72,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.NoParamsReturnString();
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -87,9 +87,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.SomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -102,8 +102,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.SomeParamsReturnVoidActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnOutput.ToString().ShouldBe(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -116,9 +116,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.SomeParamsReturnStringActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(returnValue);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(returnValue);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -131,8 +131,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.SomeParamsReturnVoidInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -145,9 +145,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.SomeParamsReturnStringInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         #endregion
@@ -164,8 +164,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.ActiveNoParamsReturnVoid();
 
-            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
-            paramsOutput.ToString().Should().Be(s_NoParamsLogReturn);
+            returnOutput.ToString().ShouldBe(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().ShouldBe(s_NoParamsLogReturn);
         }
 
         [Fact]
@@ -178,8 +178,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.ActiveSomeParamsReturnVoid(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnOutput.ToString().ShouldBe(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -192,9 +192,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.ActiveNoParamsReturnString();
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(returnValue);
-            paramsOutput.ToString().Should().Be(s_NoParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(returnValue);
+            paramsOutput.ToString().ShouldBe(s_NoParamsLogReturn);
         }
 
         [Fact]
@@ -207,9 +207,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.ActiveSomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(returnValue);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(returnValue);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -222,8 +222,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.ActiveSomeParamsReturnVoidActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnOutput.ToString().ShouldBe(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -236,9 +236,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.ActiveSomeParamsReturnStringActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(returnValue);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(returnValue);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -251,8 +251,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.ActiveSomeParamsReturnVoidInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute);
-            paramsOutput.ToString().Should().Be(s_FilteredParamsLogReturn);
+            returnOutput.ToString().ShouldBe(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute);
+            paramsOutput.ToString().ShouldBe(s_FilteredParamsLogReturn);
         }
 
         [Fact]
@@ -265,9 +265,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.ActiveSomeParamsReturnStringInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute);
-            paramsOutput.ToString().Should().Be(s_FilteredParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(AsyncDiagnosticLoggingInterceptor.FilteredParameterSubstitute);
+            paramsOutput.ToString().ShouldBe(s_FilteredParamsLogReturn);
         }
 
         [Fact]
@@ -280,9 +280,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.ActiveSomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(returnValue);
-            paramsOutput.ToString().Should().Be(s_FilteredParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(returnValue);
+            paramsOutput.ToString().ShouldBe(s_FilteredParamsLogReturn);
         }
 
         [Fact]
@@ -295,9 +295,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.ActiveSomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(returnValue);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(returnValue);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -310,9 +310,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.ActiveSomeParamsReturnStringActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(returnValue);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(returnValue);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         #endregion
@@ -329,8 +329,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.InactiveNoParamsReturnVoid();
 
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -343,8 +343,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.InactiveSomeParamsReturnVoid(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -357,9 +357,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.InactiveNoParamsReturnString();
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -372,9 +372,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.InactiveSomeParamsReturnString(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -387,8 +387,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.InactiveSomeParamsReturnVoidActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().Be(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnOutput.ToString().ShouldBe(AsyncDiagnosticLoggingInterceptor.VoidSubstitute);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -401,9 +401,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.InactiveSomeParamsReturnStringActiveParamsActiveReturn(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().Be(returnValue);
-            paramsOutput.ToString().Should().Be(s_ParamsLogReturn);
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBe(returnValue);
+            paramsOutput.ToString().ShouldBe(s_ParamsLogReturn);
         }
 
         [Fact]
@@ -416,8 +416,8 @@ namespace Zametek.Utility.Logging.Tests
 
             proxy.InactiveSomeParamsReturnVoidInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         [Fact]
@@ -430,9 +430,9 @@ namespace Zametek.Utility.Logging.Tests
 
             string returnValue = proxy.InactiveSomeParamsReturnStringInactiveParamsInactiveReturn(s_FirstParam, s_SecondParam);
 
-            returnValue.Should().Be(TestInactiveDiagnosticLoggingService.ReturnValue);
-            returnOutput.ToString().Should().BeEmpty();
-            paramsOutput.ToString().Should().BeEmpty();
+            returnValue.ShouldBe(TestInactiveDiagnosticLoggingService.ReturnValue);
+            returnOutput.ToString().ShouldBeEmpty();
+            paramsOutput.ToString().ShouldBeEmpty();
         }
 
         #endregion
