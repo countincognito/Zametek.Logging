@@ -6,7 +6,7 @@
 		<Description>Zametek utility logging classes for AspNet Core.</Description>
 		<Copyright>Copyright (c) 2025 Riccardo M Bennett-Lovsey</Copyright>
 		<PackageProjectUrl>https://github.com/countincognito/Zametek.Logging</PackageProjectUrl>
-		<Version>1.3.0-alpha</Version>
+		<Version>1.3.0-alpha.1</Version>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<NeutralLanguage>en-GB</NeutralLanguage>
 		<Authors>countincognito</Authors>
